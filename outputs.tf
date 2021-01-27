@@ -7,5 +7,5 @@ output "codebuild_role_name" {
 }
 
 output "project" {
-  value = aws_codebuild_project.this[0]
+  value = element(concat(aws_codebuild_project.this.*.id, list("")), 0)
 }
