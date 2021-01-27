@@ -13,7 +13,7 @@ locals {
 }
 
 locals {
-  role_arn = var.role_arn == "" ? aws_iam_role.pipeline.0.arn : var.role_arn
+  role_arn = var.role_arn == "" &&  var.create_codepipeline ? aws_iam_role.pipeline.0.arn : var.role_arn
 }
 
 variable "create_codecommit"{
