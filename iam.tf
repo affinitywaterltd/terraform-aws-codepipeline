@@ -40,7 +40,6 @@ resource "aws_iam_policy" "trigger" {
     ]
 }
 EOF
-  tags = var.tags
 }
 
 resource "aws_iam_role_policy_attachment" "attachtotriggerrole" {
@@ -215,8 +214,6 @@ resource "aws_iam_role_policy" "codecommit_policy" {
     ]
 }
 JSON
-  
-  tags = var.tags
 }
 
 #############################
