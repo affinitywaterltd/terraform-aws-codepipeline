@@ -1,21 +1,22 @@
 locals {
   default_stages = {
-    CODECOMMIT_BUILD_ECS = [{
-      name = "Source"
-      action = {
-        name     = "Source"
-        category = "Source"
-        owner    = "AWS"
-        provider = "CodeCommit"
-        version  = "1"
-        configuration = {
-          BranchName           = var.defaultbranch
-          PollForSourceChanges = "false"
-          RepositoryName       = var.name
+    "CODECOMMIT_BUILD_ECS" = [
+      {
+        name = "Source"
+        action = {
+          name     = "Source"
+          category = "Source"
+          owner    = "AWS"
+          provider = "CodeCommit"
+          version  = "1"
+          configuration = {
+            BranchName           = var.defaultbranch
+            PollForSourceChanges = "false"
+            RepositoryName       = var.name
+          }
+          input_artifacts  = []
+          output_artifacts = ["SourceArtifact"]
         }
-        input_artifacts  = []
-        output_artifacts = ["SourceArtifact"]
-      }
       },
       {
         name = "Build"
@@ -48,23 +49,24 @@ locals {
           }
         }
       }
-    ],
-    CODECOMMIT_CODEBUILD_CLOUDFORMATION = [{
-      name = "Source"
-      action = {
-        name     = "Source"
-        category = "Source"
-        owner    = "AWS"
-        provider = "CodeCommit"
-        version  = "1"
-        configuration = {
-          BranchName           = var.defaultbranch
-          PollForSourceChanges = "false"
-          RepositoryName       = var.name
+    ]
+    "CODECOMMIT_CODEBUILD_CLOUDFORMATION" = [
+      {
+        name = "Source"
+        action = {
+          name     = "Source"
+          category = "Source"
+          owner    = "AWS"
+          provider = "CodeCommit"
+          version  = "1"
+          configuration = {
+            BranchName           = var.defaultbranch
+            PollForSourceChanges = "false"
+            RepositoryName       = var.name
+          }
+          input_artifacts  = []
+          output_artifacts = ["SourceArtifact"]
         }
-        input_artifacts  = []
-        output_artifacts = ["SourceArtifact"]
-      }
       },
       {
         name = "Build"
