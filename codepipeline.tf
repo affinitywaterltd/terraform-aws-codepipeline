@@ -11,7 +11,7 @@ resource "aws_codepipeline" "this" {
 
 
   dynamic "stage" {
-    for_each = [for s in var.stages : {
+    for_each = [for s in lookup(local.default_stages, "ECS", var.stages) : {
       name   = s.name
       action = s.action
     }]
