@@ -21,7 +21,7 @@ resource "aws_iam_role" "trigger" {
 }
 PATTERN
 
-  tags = var.common_tags
+  tags = var.tags
 }
 
 resource "aws_iam_policy" "trigger" {
@@ -40,6 +40,7 @@ resource "aws_iam_policy" "trigger" {
     ]
 }
 EOF
+  tags = var.tags
 }
 
 resource "aws_iam_role_policy_attachment" "attachtotriggerrole" {
@@ -70,7 +71,7 @@ resource "aws_iam_role" "codebuild" {
 }
 HERE
 
-  tags = var.common_tags
+  tags = var.tags
 }
 
 resource "aws_iam_role_policy" "codebuild_policy" {
@@ -163,6 +164,8 @@ data "aws_iam_policy_document" "codebuild_policy" {
       "*",
     ]
   }
+
+  tags = var.tags
 }
 
 
@@ -214,6 +217,8 @@ resource "aws_iam_role_policy" "codecommit_policy" {
     ]
 }
 JSON
+  
+  tags = var.tags
 }
 
 #############################
@@ -238,6 +243,8 @@ resource "aws_iam_role" "pipeline" {
     ]
 }
 POLICY
+
+  tags = var.tags
 }
 
 resource "aws_iam_role_policy" "inline_policy" {
@@ -348,4 +355,5 @@ data "aws_iam_policy_document" "pipeline" {
 
     resources = ["*"]
   }
+  tags = var.tags
 }

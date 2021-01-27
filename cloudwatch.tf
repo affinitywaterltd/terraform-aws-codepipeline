@@ -24,6 +24,8 @@ resource "aws_cloudwatch_event_rule" "codechange" {
     ]
 }
 PATTERN
+  
+  tags = var.tags
 }
 
 resource "aws_cloudwatch_event_target" "triggerbuild" {

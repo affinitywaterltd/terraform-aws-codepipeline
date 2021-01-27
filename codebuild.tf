@@ -28,5 +28,5 @@ resource "aws_codebuild_project" "this" {
     buildspec = var.sourcecode["buildspec"]
   }
 
-  tags = var.common_tags
+  tags = var.tags
 }

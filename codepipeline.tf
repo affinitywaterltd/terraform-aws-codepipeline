@@ -31,5 +31,5 @@ resource "aws_codepipeline" "this" {
     }
   }
 
-  tags = var.common_tags
+  tags = var.tags
 }

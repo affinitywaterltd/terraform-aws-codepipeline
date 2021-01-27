@@ -16,4 +16,6 @@ resource "aws_s3_bucket" "artifacts" {
       }
     }
   }
+
+  tags = var.tags
 }

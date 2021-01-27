@@ -165,7 +165,7 @@ variable "stages" {
 }
 
 
-variable "common_tags" {
+variable "tags" {
   type        = map(any)
   description = "Implements the common tags scheme"
 }
