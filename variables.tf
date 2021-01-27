@@ -16,6 +16,12 @@ locals {
   role_arn = var.role_arn == "" &&  var.create_codepipeline ? aws_iam_role.pipeline.0.arn : var.role_arn
 }
 
+variable "cloudformation_iam_role"{
+  description = "Determine ARN of the Role used for Cloudformation Deployments"
+  type = string
+  default = ""
+}
+
 variable "create_codecommit"{
   description = "Determine whether a codecommit is created"
   type = bool

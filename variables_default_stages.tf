@@ -9,9 +9,9 @@ locals {
         provider = "CodeCommit"
         version  = "1"
         configuration = {
-          BranchName           = "${var.defaultbranch}"
+          BranchName           = var.defaultbranch
           PollForSourceChanges = "false"
-          RepositoryName       = "${var.name}"
+          RepositoryName       = var.name
         }
         input_artifacts  = []
         output_artifacts = ["SourceArtifact"]
@@ -49,7 +49,7 @@ locals {
         }
       }
     ],
-    CODECOMMIT_LAMBDA = [{
+    CODECOMMIT_CODEBUILD_CLOUDFORMATION = [{
       name = "Source"
       action = {
         name     = "Source"
@@ -58,9 +58,9 @@ locals {
         provider = "CodeCommit"
         version  = "1"
         configuration = {
-          BranchName           = "${var.defaultbranch}"
+          BranchName           = var.defaultbranch
           PollForSourceChanges = "false"
-          RepositoryName       = "${var.name}"
+          RepositoryName       = var.name
         }
         input_artifacts  = []
         output_artifacts = ["SourceArtifact"]
@@ -87,16 +87,50 @@ locals {
           name             = "Deploy"
           category         = "Deploy"
           owner            = "AWS"
-          provider         = "ECS"
+          provider         = "CloudFormation"
           version          = "1"
           input_artifacts  = ["BuildArtifact"]
           output_artifacts = []
           configuration = {
-            ClusterName = "${var.custom_ecs_cluster == null ? var.name : var.custom_ecs_cluster}"
-            ServiceName = "${var.custom_ecs_service == null ? var.name : var.custom_ecs_service}"
+            ActionMode    = "CHANGE_SET_REPLACE"
+            Capabilities  = "CAPABILITY_IAM"
+            StackName     = "${var.name}-cloudformation-stack"
+            TemplatePath  = "build::buildspec.yml"
+            ChangeSetName = "${var.name}-cloudformation-changeset"
+            RoleArn       = "${var.cloudformation_iam_role == null ? var.cloudformation_iam_role : var.cloudformation_iam_role}"
           }
         }
-      }
+      },
+      {
+        Name = "Approval"
+        action = {
+          name      = "ReviewChangeSets"
+          category  = "Approval"
+          owner     = "AWS"
+          provider  = "Manual"
+          version   = "1"
+        }
+      },
+      {
+        name = "Deploy"
+        action = {
+          name             = "Deploy"
+          category         = "Deploy"
+          owner            = "AWS"
+          provider         = "CloudFormation"
+          version          = "1"
+          input_artifacts  = ["BuildArtifact"]
+          output_artifacts = []
+          configuration = {
+            ActionMode    = "CHANGE_SET_REPLACE"
+            Capabilities  = "CAPABILITY_IAM"
+            StackName     = "${var.name}-cloudformation-stack"
+            TemplatePath  = "build::buildspec.yml"
+            ChangeSetName = "${var.name}-cloudformation-changeset"
+            RoleArn       = "${var.cloudformation_iam_role == null ? var.cloudformation_iam_role : var.cloudformation_iam_role}"
+          }
+        }
+      },
     ]
   }
 }
