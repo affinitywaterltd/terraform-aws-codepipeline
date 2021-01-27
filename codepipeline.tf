@@ -11,7 +11,7 @@ resource "aws_codepipeline" "this" {
 
 
   dynamic "stage" {
-    for_each = [for s in lookup(local.default_stages, var.preconfigured_stage_config, var.stages) : {
+    for_each = [for s in lookup(local.default_stages, "CODECOMMIT_CODEBUILD_CLOUDFORMATION", var.stages) : {
       name   = s.name
       action = s.action
     }]
