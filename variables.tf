@@ -90,6 +90,18 @@ variable "defaultbranch" {
   default     = "master"
 }
 
+variable "custom_ecs_cluster" {
+  description = "The ECS Cluster name"
+  type        = string
+  default     = null
+}
+
+variable "custom_ecs_service" {
+  description = "The ECS Service name"
+  type        = string
+  default     = null
+}
+
 variable "environment" {
   description = "A map to describe the build environment and populate the environment block"
   type        = map
@@ -176,6 +188,12 @@ variable "stages" {
   type        = list(any)
   description = "This list describes each stage of the build"
   default     = []
+}
+
+variable "preconfigured_stage_config" {
+  type        = string
+  description = "The default pipeline stage configuration to use"
+  default     = null
 }
 
 
