@@ -147,6 +147,7 @@ variable "mfa_delete" {
 variable "artifact_store" {
   description = "Map to populate the artifact block"
   type        = map(any)
+  default     = {}
 }
 
 variable "name" {
@@ -162,6 +163,7 @@ variable "role_arn" {
 variable "stages" {
   type        = list(any)
   description = "This list describes each stage of the build"
+  default     = []
 }
 
 
