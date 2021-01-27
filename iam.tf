@@ -164,8 +164,6 @@ data "aws_iam_policy_document" "codebuild_policy" {
       "*",
     ]
   }
-
-  tags = var.tags
 }
 
 
@@ -355,5 +353,4 @@ data "aws_iam_policy_document" "pipeline" {
 
     resources = ["*"]
   }
-  tags = var.tags
 }
