@@ -2,8 +2,8 @@ resource "aws_codepipeline" "this" {
   count = var.create_codepipeline ? 1 : 0
 
   artifact_store {
-    location = var.artifact_store["location"]
-    type     = var.artifact_store["type"]
+    location = var.artifact_store_location == "" ? aws_s3_bucket.artifacts.arn : var.artifact_store_location
+    type     = var.artifact_store_type
   }
 
   name     = var.name

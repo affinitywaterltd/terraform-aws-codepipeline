@@ -131,6 +131,18 @@ variable "artifact_type" {
   default     = "S3"
 }
 
+variable "artifact_store_type" {
+  description = "The Artifact type used in CODEPIPELINE"
+  type        = string
+  default     = "S3"
+}
+
+variable "artifact_store_location" {
+  description = "The Artifact location used in CODEPIPELINE"
+  type        = string
+  default     = ""
+}
+
 variable "versioning" {
   type        = bool
   description = "Set bucket to version"
