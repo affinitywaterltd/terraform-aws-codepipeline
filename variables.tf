@@ -34,11 +34,6 @@ variable "create_codebuild"{
   default = false
 }
 
-variable "name" {
-  description = "The name of the Build"
-  type        = string
-}
-
 variable "reponame" {
   type        = string
   description = "The name of the repository"
@@ -62,12 +57,6 @@ variable "role" {
   default     = ""
   type        = string
 }
-
-variable "common_tags" {
-  type        = map
-  description = "An AWS tagging scheme"
-}
-
 
 variable "artifact" {
   description = "Populates the Artifact block"
@@ -175,10 +164,6 @@ variable "stages" {
   description = "This list describes each stage of the build"
 }
 
-variable "description" {
-  type        = string
-  description = "Description of build project"
-}
 
 variable "common_tags" {
   type        = map(any)
