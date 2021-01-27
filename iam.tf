@@ -52,9 +52,9 @@ resource "aws_iam_role_policy_attachment" "attachtotriggerrole" {
 ######### CodeBuild #########
 #############################
 resource "aws_iam_role" "codebuild" {
-  name  = "codebuildrole-${var.name}"
-  count = var.role == "" ? 1 : 0
+  count = var.role == "" && var.create_codebuild ? 1 : 0
 
+  name  = "codebuildrole-${var.name}"
   assume_role_policy = <<HERE
 {
     "Version": "2012-10-17",
@@ -74,8 +74,9 @@ HERE
 }
 
 resource "aws_iam_role_policy" "codebuild_policy" {
+  count = var.role == "" && var.create_codebuild ? 1 : 0
+  
   name  = "codebuildpolicy-${var.name}"
-  count = var.role == "" ? 1 : 0
   role  = aws_iam_role.codebuild.0.id
 
   policy = data.aws_iam_policy_document.codebuild_policy.json
@@ -170,8 +171,9 @@ data "aws_iam_policy_document" "codebuild_policy" {
 ######## CodeCommit #########
 #############################
 resource "aws_iam_role_policy" "codecommit_policy" {
-  name  = "codecommitpolicy-${var.name}"
   count = var.reponame == "" ? 0 : 1
+
+  name  = "codecommitpolicy-${var.name}"
   role  = aws_iam_role.codebuild[count.index].id
 
   policy = <<JSON
@@ -220,7 +222,7 @@ JSON
 ####### CodePipeline ########
 #############################
 resource "aws_iam_role" "pipeline" {
-  count = var.role_arn == "" ? 1 : 0
+  count = var.role_arn == "" && var.create_codepipeline ? 1 : 0
   name  = "AWSCodePipelineServiceRole-${data.aws_region.current.name}-${var.name}"
   path  = "/service-role/"
 
@@ -243,7 +245,7 @@ POLICY
 }
 
 resource "aws_iam_role_policy" "inline_policy" {
-  count = var.role_arn == "" ? 1 : 0
+  count = var.role_arn == "" && var.create_codepipeline ? 1 : 0
   name  = "AWSCodePipeline-${data.aws_region.current.name}-${var.name}"
   role  = aws_iam_role.pipeline.0.name
 
