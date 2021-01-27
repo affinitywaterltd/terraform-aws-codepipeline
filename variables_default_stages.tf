@@ -28,7 +28,7 @@ locals {
           output_artifacts = ["BuildArtifact"]
           version          = "1"
           configuration = {
-            ProjectName = "${aws_codebuild_project.this[0].id}"
+            ProjectName = "${element(concat(aws_codebuild_project.this.*.id, list("")), 0)}"
           }
         }
       },
@@ -77,7 +77,7 @@ locals {
           output_artifacts = ["BuildArtifact"]
           version          = "1"
           configuration = {
-            ProjectName = "${aws_codebuild_project.this[0].id}"
+            ProjectName = "${element(concat(aws_codebuild_project.this.*.id, list("")), 0)}"
           }
         }
       },
