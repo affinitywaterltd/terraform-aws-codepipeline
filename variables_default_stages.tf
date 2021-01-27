@@ -49,7 +49,7 @@ locals {
         }
       }
     ],
-    CODECOMMIT_BUILD_LAMBDA = [{
+    CODECOMMIT_LAMBDA = [{
       name = "Source"
       action = {
         name     = "Source"
