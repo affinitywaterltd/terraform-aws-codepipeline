@@ -24,7 +24,7 @@ resource "aws_codebuild_project" "this" {
 
   source {
     type      = var.sourcecode["type"]
-    location  = var.sourcecode["location"]
+    location  = var.sourcecode["location"] == "" ? var.name : var.sourcecode["location"]
     buildspec = var.sourcecode["buildspec"]
   }
 
