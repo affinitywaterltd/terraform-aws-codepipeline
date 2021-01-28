@@ -97,13 +97,13 @@ locals {
             ActionMode    = "CHANGE_SET_REPLACE"
             Capabilities  = "CAPABILITY_IAM"
             StackName     = "${var.name}-cloudformation-stack"
-            TemplatePath  = "build::buildspec.yml"
+            TemplatePath  = "BuildArtifact::buildspec.yml"
             ChangeSetName = "${var.name}-cloudformation-changeset"
             RoleArn       = var.role_arn == "" ? element(concat(aws_iam_role.pipeline.*.arn, list("")), 0) : var.role_arn
           }
         }
       },
-      /*{
+      {
         name = "Approval"
         action = {
           name      = "ReviewChangeSets"
@@ -115,7 +115,7 @@ locals {
           output_artifacts = []
           configuration    = null
         }
-      },*/
+      },
     ],
   }
 }
