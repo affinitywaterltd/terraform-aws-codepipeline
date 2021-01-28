@@ -111,6 +111,9 @@ locals {
           owner     = "AWS"
           provider  = "Manual"
           version   = "1"
+          input_artifacts  = []
+          output_artifacts = []
+          configuration    = {}
         }
       },
     ],
