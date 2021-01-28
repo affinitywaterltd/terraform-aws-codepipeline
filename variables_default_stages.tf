@@ -113,7 +113,7 @@ locals {
           version   = "1"
           input_artifacts  = []
           output_artifacts = []
-          configuration    = {}
+          configuration    = null
         }
       },
     ],
