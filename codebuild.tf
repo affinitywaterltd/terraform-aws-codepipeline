@@ -1,5 +1,5 @@
 resource "aws_codebuild_project" "this" {
-  count = var.create_codebuild ? 1 : 0
+  count = var.create_codebuild || contains(split("_", var.preconfigured_stage_config), "CODEBUILD")  ? 1 : 0
 
   name          = replace(var.name, ".", "-")
   description   = var.description

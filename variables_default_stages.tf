@@ -1,6 +1,6 @@
 locals {
   default_stages = {
-    "CODECOMMIT_BUILD_ECS" = [
+    "CODECOMMIT_CODEBUILD_ECS" = [
       {
         name = "Source"
         action = {
