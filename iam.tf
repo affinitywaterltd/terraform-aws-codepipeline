@@ -52,7 +52,7 @@ resource "aws_iam_role_policy_attachment" "attachtotriggerrole" {
 ######### CodeBuild #########
 #############################
 resource "aws_iam_role" "codebuild" {
-  count = var.role == "" && var.create_codebuild ? 1 : 0
+  count = var.role == "" && (var.create_codebuild || contains(split("_", var.preconfigured_stage_config), "CODEBUILD")) ? 1 : 0
 
   name  = "codebuildrole-${var.name}"
   assume_role_policy = <<HERE
@@ -74,8 +74,8 @@ HERE
 }
 
 resource "aws_iam_role_policy" "codebuild_policy" {
-  count = var.role == "" && var.create_codebuild ? 1 : 0
-  
+  count = var.role == "" && (var.create_codebuild|| contains(split("_", var.preconfigured_stage_config), "CODEBUILD")) ? 1 : 0
+
   name  = "codebuildpolicy-${var.name}"
   role  = aws_iam_role.codebuild.0.id
 
