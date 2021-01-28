@@ -224,7 +224,7 @@ JSON
 #############################
 resource "aws_iam_role" "codedeploy" {
   count = var.role == "" && (var.create_codedeploy|| contains(split("_", var.preconfigured_stage_config), "CODEDEPLOY")) ? 1 : 0
-  name = "example-role"
+  name = "AWSCodeDeployRole-${data.aws_region.current.name}-${var.name}"
 
   assume_role_policy = <<EOF
 {
@@ -245,7 +245,7 @@ EOF
 
 resource "aws_iam_role_policy_attachment" "AWSCodeDeployRole" {
   count = var.role == "" && (var.create_codedeploy|| contains(split("_", var.preconfigured_stage_config), "CODEDEPLOY")) ? 1 : 0
-  
+
   policy_arn = "arn:aws:iam::aws:policy/service-role/AWSCodeDeployRole"
   role       = aws_iam_role.codedeploy[0].name
 }
