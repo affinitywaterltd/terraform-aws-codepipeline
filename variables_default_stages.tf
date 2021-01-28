@@ -116,6 +116,26 @@ locals {
           configuration    = null
         }
       },
+      {
+        name = "Deploy"
+        action = {
+          name             = "Deploy"
+          category         = "Deploy"
+          owner            = "AWS"
+          provider         = "CloudFormation"
+          version          = "1"
+          input_artifacts  = ["BuildArtifact"]
+          output_artifacts = []
+          configuration = {
+            ActionMode    = "CHANGE_SET_REPLACE"
+            Capabilities  = "CAPABILITY_IAM"
+            StackName     = "${var.name}-cloudformation-stack"
+            TemplatePath  = "build::buildspec.yml"
+            ChangeSetName = "${var.name}-cloudformation-changeset"
+            RoleArn       = var.cloudformation_iam_role == null ? var.cloudformation_iam_role : var.cloudformation_iam_role
+          }
+        }
+      },
     ],
   }
 }
