@@ -235,7 +235,7 @@ resource "aws_iam_role" "pipeline" {
             "Principal": {
                 "Service": [
                   "codepipeline.amazonaws.com",
-                  "codedeploy.amazonaws.com",
+                  "codedeploy.amazonaws.com"
                 ]
             },
             "Action": "sts:AssumeRole"
