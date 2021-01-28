@@ -1,5 +1,5 @@
 locals {
-  default_stages = tomap({
+  default_stages = {
     "CODECOMMIT_BUILD_ECS" = [
       {
         name = "Source"
@@ -134,5 +134,5 @@ locals {
         }
       },
     ]
-  })
+  }
 }
