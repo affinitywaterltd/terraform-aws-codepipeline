@@ -10,7 +10,7 @@ resource "aws_codedeploy_deployment_group" "this" {
 
   app_name              = aws_codedeploy_app.this[0].name
   deployment_group_name = aws_codedeploy_app.this[0].name
-  service_role_arn      = aws_iam_role.codedeploy[0].name
+  service_role_arn      = aws_iam_role.codedeploy[0].arn
 
   deployment_config_name = var.codedeploy_compute_platform == "Lambda" ? "CodeDeployDefault.LambdaAllAtOnce" : "CodeDeployDefault.OneAtATime"
 
