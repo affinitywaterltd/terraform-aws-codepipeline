@@ -137,6 +137,54 @@ locals {
         }
       },
     ],
+    "CODECOMMIT_CODEDEPLOY_LAMBDA" = [
+      {
+        name = "Source"
+        action = {
+          name     = "Source"
+          category = "Source"
+          owner    = "AWS"
+          provider = "CodeCommit"
+          version  = "1"
+          configuration = {
+            BranchName           = var.defaultbranch
+            PollForSourceChanges = "false"
+            RepositoryName       = var.name
+          }
+          input_artifacts  = []
+          output_artifacts = ["SourceArtifact"]
+        }
+      },
+      {
+        name = "Approval"
+        action = {
+          name      = "ReviewChangeSets"
+          category  = "Approval"
+          owner     = "AWS"
+          provider  = "Manual"
+          version   = "1"
+          input_artifacts  = []
+          output_artifacts = []
+          configuration    = null
+        }
+      },
+      {
+        name = "Deploy"
+        action = {
+          name             = "Deploy"
+          category         = "Deploy"
+          owner            = "AWS"
+          provider         = "CodeDeploy"
+          version          = "1"
+          input_artifacts  = ["SourceArtifact"]
+          output_artifacts = []
+          configuration = {
+            ApplicationName    = element(concat(aws_codedeploy_app.this.*.id, list("")), 0)
+            DeploymentGroupName  = element(concat(aws_codedeploy_deployment_group.this.*.id, list("")), 0)
+          }
+        }
+      },
+    ],
   }
 }
 

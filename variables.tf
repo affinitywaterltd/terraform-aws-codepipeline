@@ -28,6 +28,18 @@ variable "create_codecommit"{
   default = false
 }
 
+variable "codedeploy_compute_platform"{
+  description = "Determine which platform codedeploy is using"
+  type = bool
+  default = "LAMBDA"
+}
+
+variable "create_codedeploy"{
+  description = "Determine whether a codedeploy is created"
+  type = bool
+  default = false
+}
+
 variable "create_codepipeline"{
   description = "Determine whether a CodePipeline is created"
   type = bool
