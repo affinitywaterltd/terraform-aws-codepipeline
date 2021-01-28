@@ -23,8 +23,8 @@ resource "aws_kms_key" "kms_pipeline_key" {
       "Effect": "Allow",
       "Principal": {
         "AWS": [
-          "${element(concat(aws_iam_role.pipeline.*.arn, list("")), 0)}",
-          "${element(concat(aws_iam_role.codebuild.*.arn, list("")), 0)}"
+          "${element(concat(aws_iam_role.pipeline.*.arn, list(null)), 0)}",
+          "${element(concat(aws_iam_role.codebuild.*.arn, list(null)), 0)}"
         ]
       },
       "Action": [
