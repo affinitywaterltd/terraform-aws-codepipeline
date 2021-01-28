@@ -266,7 +266,6 @@ resource "aws_iam_role" "pipeline" {
             "Effect": "Allow",
             "Principal": {
                 "Service": "codepipeline.amazonaws.com"
-                ]
             },
             "Action": "sts:AssumeRole"
         }
