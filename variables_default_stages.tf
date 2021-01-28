@@ -83,7 +83,7 @@ locals {
           }
         }
       },
-      {
+      /*{
         name = "Stage"
         action = {
           name             = "Stage"
@@ -103,7 +103,7 @@ locals {
           }
         }
       },
-      /*{
+      {
         name = "Approval"
         action = {
           name      = "ReviewChangeSets"
