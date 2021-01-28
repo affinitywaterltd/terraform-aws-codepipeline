@@ -130,7 +130,7 @@ locals {
             ActionMode    = "CHANGE_SET_REPLACE"
             Capabilities  = "CAPABILITY_IAM"
             StackName     = "${var.name}-cloudformation-stack"
-            TemplatePath  = "build::buildspec.yml"
+            TemplatePath  = "BuildArtifact::buildspec.yml"
             ChangeSetName = "${var.name}-cloudformation-changeset"
             RoleArn       = var.cloudformation_iam_role == null ? var.cloudformation_iam_role : var.cloudformation_iam_role
           }
