@@ -89,13 +89,17 @@ locals {
           name             = "Deploy"
           category         = "Deploy"
           owner            = "AWS"
-          provider         = "ECS"
+          provider         = "CloudFormation"
           version          = "1"
           input_artifacts  = ["BuildArtifact"]
           output_artifacts = []
           configuration = {
-            ClusterName = var.custom_ecs_cluster == null ? var.name : var.custom_ecs_cluster
-            ServiceName = var.custom_ecs_service == null ? var.name : var.custom_ecs_service
+            ActionMode    = "CHANGE_SET_REPLACE"
+            Capabilities  = "CAPABILITY_IAM"
+            StackName     = "${var.name}-cloudformation-stack"
+            TemplatePath  = "build::buildspec.yml"
+            ChangeSetName = "${var.name}-cloudformation-changeset"
+            RoleArn       = var.cloudformation_iam_role == null ? var.cloudformation_iam_role : var.cloudformation_iam_role
           }
         }
       }
