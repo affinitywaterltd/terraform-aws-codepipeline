@@ -5,7 +5,7 @@ resource "aws_codebuild_project" "this" {
   description   = var.description
   service_role  = var.role == "" ? element(concat(aws_iam_role.codebuild.*.arn, list("")), 0) : element(concat(data.aws_iam_role.existing.*.arn, list("")), 0)
   build_timeout = var.build_timeout
-  encryption_key = aws_kms_key.kms_pipeline_key.key_id
+  encryption_key = aws_kms_key.kms_pipeline_key.arn
 
   artifacts {
     encryption_disabled = var.encryption_disabled
