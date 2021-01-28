@@ -104,7 +104,7 @@ locals {
         }
       },
       {
-        Name = "Approval"
+        name = "Approval"
         action = {
           name      = "ReviewChangeSets"
           category  = "Approval"
