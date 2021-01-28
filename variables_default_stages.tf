@@ -101,6 +101,13 @@ locals {
             ChangeSetName = "${var.name}-cloudformation-changeset"
             RoleArn       = var.cloudformation_iam_role == null ? var.cloudformation_iam_role : var.cloudformation_iam_role
           }
+        },
+        action = {
+          name      = "ReviewChangeSets"
+          category  = "Approval"
+          owner     = "AWS"
+          provider  = "Manual"
+          version   = "1"
         }
       }
     ],

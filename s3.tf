@@ -19,9 +19,3 @@ resource "aws_s3_bucket" "artifacts" {
 
   tags = var.tags
 }
-
-resource "aws_s3_bucket" "test" {
-  count         = length(keys(local.default_stages))
-  bucket        = element(keys(local.default_stages), count.index)
-  acl           = "private"
-}
