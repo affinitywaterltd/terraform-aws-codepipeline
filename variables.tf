@@ -213,3 +213,15 @@ variable "policypath" {
   type        = string
   description = ""
 }
+
+variable "artifact_store_encryption_type" {
+  default     = "Encryption Type used by CodePipeline Artifacts"
+  type        = string
+  description = "KMS"
+}
+
+variable "artifact_store_encryption_key_id" {
+  default     = "Encryption key id used by CodePipeline Artifacts"
+  type        = string
+  description = ""
+}

@@ -4,6 +4,11 @@ resource "aws_codepipeline" "this" {
   artifact_store {
     location = var.artifact_store_location == "" ? aws_s3_bucket.artifacts[0].bucket : var.artifact_store_location
     type     = var.artifact_store_type
+
+    encryption_key {
+      id   = var.artifact_store_encryption_key_id == "" ? aws_kms_key.kms_pipeline_key.key_id : var.artifact_store_encryption_key_id
+      type = var.artifact_store_encryption_type
+    }
   }
 
   name     = var.name
