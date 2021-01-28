@@ -30,7 +30,7 @@ variable "create_codecommit"{
 
 variable "codedeploy_compute_platform"{
   description = "Determine which platform codedeploy is using"
-  type = bool
+  type = string
   default = "LAMBDA"
 }
 
