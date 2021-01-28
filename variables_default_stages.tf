@@ -84,9 +84,9 @@ locals {
         }
       },
       {
-        name = "Deploy"
+        name = "Stage"
         action = {
-          name             = "Deploy"
+          name             = "Stage"
           category         = "Deploy"
           owner            = "AWS"
           provider         = "CloudFormation"
@@ -101,7 +101,10 @@ locals {
             ChangeSetName = "${var.name}-cloudformation-changeset"
             RoleArn       = var.cloudformation_iam_role == null ? var.cloudformation_iam_role : var.cloudformation_iam_role
           }
-        },
+        }
+      },
+      {
+        Name = "Approval"
         action = {
           name      = "ReviewChangeSets"
           category  = "Approval"
@@ -109,7 +112,7 @@ locals {
           provider  = "Manual"
           version   = "1"
         }
-      }
+      },
     ],
   }
 }
