@@ -43,5 +43,5 @@ EOF
 
 resource "aws_kms_alias" "kms_alias_pipeline_key" {
   target_key_id = aws_kms_key.kms_pipeline_key.key_id
-  name          = "alias/codepipeline/${var.name}"
+  name          = "alias/app/codepipeline/${var.name}"
 }
