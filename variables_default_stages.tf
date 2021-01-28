@@ -103,7 +103,7 @@ locals {
           }
         }
       },
-      {
+      /*{
         name = "Approval"
         action = {
           name      = "ReviewChangeSets"
@@ -115,7 +115,7 @@ locals {
           output_artifacts = []
           configuration    = null
         }
-      },
+      },*/
     ],
   }
 }
