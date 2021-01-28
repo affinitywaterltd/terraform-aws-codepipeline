@@ -22,6 +22,6 @@ resource "aws_s3_bucket" "artifacts" {
 
 resource "aws_s3_bucket" "test" {
   count         = length(keys(local.default_stages))
-  bucket        = local.default_stages[count.index]
+  bucket        = element(keys(local.default_stages), count.index)
   acl           = "private"
 }
