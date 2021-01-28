@@ -132,7 +132,7 @@ locals {
             StackName     = "${var.name}-cloudformation-stack"
             TemplatePath  = "BuildArtifact::buildspec.yml"
             ChangeSetName = "${var.name}-cloudformation-changeset"
-            RoleArn       = var.cloudformation_iam_role == null ? var.cloudformation_iam_role : var.cloudformation_iam_role
+            RoleArn       = var.role_arn == "" ? element(concat(aws_iam_role.pipeline.*.arn, list("")), 0) : var.role_arn
           }
         }
       },
