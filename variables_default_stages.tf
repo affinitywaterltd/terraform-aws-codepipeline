@@ -29,7 +29,7 @@ locals {
           output_artifacts = ["BuildArtifact"]
           version          = "1"
           configuration = {
-            ProjectName = "${element(concat(aws_codebuild_project.this.*.id, list("")), 0)}"
+            ProjectName = element(concat(aws_codebuild_project.this.*.id, list("")), 0)
           }
         }
       },
@@ -44,8 +44,8 @@ locals {
           input_artifacts  = ["BuildArtifact"]
           output_artifacts = []
           configuration = {
-            ClusterName = "${var.custom_ecs_cluster == null ? var.name : var.custom_ecs_cluster}"
-            ServiceName = "${var.custom_ecs_service == null ? var.name : var.custom_ecs_service}"
+            ClusterName = var.custom_ecs_cluster == null ? var.name : var.custom_ecs_cluster
+            ServiceName = var.custom_ecs_service == null ? var.name : var.custom_ecs_service
           }
         }
       }
@@ -79,7 +79,7 @@ locals {
           output_artifacts = ["BuildArtifact"]
           version          = "1"
           configuration = {
-            ProjectName = "${element(concat(aws_codebuild_project.this.*.id, list("")), 0)}"
+            ProjectName = element(concat(aws_codebuild_project.this.*.id, list("")), 0)
           }
         }
       },
@@ -99,7 +99,7 @@ locals {
             StackName     = "${var.name}-cloudformation-stack"
             TemplatePath  = "build::buildspec.yml"
             ChangeSetName = "${var.name}-cloudformation-changeset"
-            RoleArn       = "${var.cloudformation_iam_role == null ? var.cloudformation_iam_role : var.cloudformation_iam_role}"
+            RoleArn       = var.cloudformation_iam_role == null ? var.cloudformation_iam_role : var.cloudformation_iam_role
           }
         }
       },
@@ -129,7 +129,7 @@ locals {
             StackName     = "${var.name}-cloudformation-stack"
             TemplatePath  = "build::buildspec.yml"
             ChangeSetName = "${var.name}-cloudformation-changeset"
-            RoleArn       = "${var.cloudformation_iam_role == null ? var.cloudformation_iam_role : var.cloudformation_iam_role}"
+            RoleArn       = var.cloudformation_iam_role == null ? var.cloudformation_iam_role : var.cloudformation_iam_role
           }
         }
       },
