@@ -23,7 +23,7 @@ resource "aws_kms_key" "kms_pipeline_key" {
       "Effect": "Allow",
       "Principal": {
         "AWS": [
-          "${concat(aws_iam_role.pipeline.*.arn, aws_iam_role.codebuild.*.arn)}",
+          "${element(concat(aws_iam_role.pipeline.*.arn, list("")), 0)}"
         ]
       },
       "Action": [
@@ -44,3 +44,9 @@ resource "aws_kms_alias" "kms_alias_pipeline_key" {
   target_key_id = aws_kms_key.kms_pipeline_key.key_id
   name          = "alias/app/codepipeline/${var.name}"
 }
+
+
+
+
+#,
+          #"${element(concat(aws_iam_role.codebuild.*.arn, list("")), 0)}"
