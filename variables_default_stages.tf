@@ -185,8 +185,9 @@ locals {
             RoleArn       = var.role_arn == "" ? element(concat(aws_iam_role.pipeline.*.arn, list("")), 0) : var.role_arn
           }
         }
-      },
-      "CODECOMMIT_CODEBUILD_APPROVAL_CLOUDFORMATION" = [
+      }
+    ],
+    "CODECOMMIT_CODEBUILD_APPROVAL_CLOUDFORMATION" = [
       {
         name = "Source"
         action = {
@@ -271,7 +272,7 @@ locals {
             RoleArn       = var.role_arn == "" ? element(concat(aws_iam_role.pipeline.*.arn, list("")), 0) : var.role_arn
           }
         }
-      },
+      }
     ]
   }
 }
