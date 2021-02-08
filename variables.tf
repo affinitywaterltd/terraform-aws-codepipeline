@@ -126,7 +126,7 @@ variable "environment" {
   default = {
     privileged_mode = "false"
     type            = "LINUX_CONTAINER"
-    image           = "aws/codebuild/nodejs:6.3.1"
+    image           = "aws/codebuild/standard:5.0"
     compute_type    = "BUILD_GENERAL1_SMALL"
   }
 }
