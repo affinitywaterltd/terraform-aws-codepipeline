@@ -160,7 +160,7 @@ locals {
             ActionMode    = "CHANGE_SET_REPLACE"
             Capabilities  = "CAPABILITY_IAM"
             StackName     = "${var.name}-cloudformation-stack"
-            TemplatePath  = "BuildArtifact::buildspec.yml"
+            TemplatePath  = "BuildArtifact::cfn-template.yml"
             ChangeSetName = "${var.name}-cloudformation-changeset"
             RoleArn       = var.role_arn == "" ? element(concat(aws_iam_role.pipeline.*.arn, list("")), 0) : var.role_arn
           }
@@ -180,7 +180,7 @@ locals {
             ActionMode    = "CHANGE_SET_REPLACE"
             Capabilities  = "CAPABILITY_IAM"
             StackName     = "${var.name}-cloudformation-stack"
-            TemplatePath  = "BuildArtifact::buildspec.yml"
+            TemplatePath  = "BuildArtifact::cfn-template.yml"
             ChangeSetName = "${var.name}-cloudformation-changeset"
             RoleArn       = var.role_arn == "" ? element(concat(aws_iam_role.pipeline.*.arn, list("")), 0) : var.role_arn
           }
@@ -234,7 +234,7 @@ locals {
             ActionMode    = "CHANGE_SET_REPLACE"
             Capabilities  = "CAPABILITY_IAM"
             StackName     = "${var.name}-cloudformation-stack"
-            TemplatePath  = "BuildArtifact::buildspec.yml"
+            TemplatePath  = "BuildArtifact::cfn-template.yml"
             ChangeSetName = "${var.name}-cloudformation-changeset"
             RoleArn       = var.role_arn == "" ? element(concat(aws_iam_role.pipeline.*.arn, list("")), 0) : var.role_arn
           }
@@ -267,7 +267,7 @@ locals {
             ActionMode    = "CHANGE_SET_REPLACE"
             Capabilities  = "CAPABILITY_IAM"
             StackName     = "${var.name}-cloudformation-stack"
-            TemplatePath  = "BuildArtifact::buildspec.yml"
+            TemplatePath  = "BuildArtifact::cfn-template.yml"
             ChangeSetName = "${var.name}-cloudformation-changeset"
             RoleArn       = var.role_arn == "" ? element(concat(aws_iam_role.pipeline.*.arn, list("")), 0) : var.role_arn
           }
