@@ -332,6 +332,14 @@ data "aws_iam_policy_document" "pipeline" {
 
   statement {
     actions = [
+      "cloudformation:*"
+    ]
+
+    resources = ["*"]
+  }
+
+  statement {
+    actions = [
       "elasticbeanstalk:*",
       "ec2:*",
       "elasticloadbalancing:*",
