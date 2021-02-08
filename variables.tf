@@ -105,7 +105,7 @@ variable "bucketname" {
 variable "defaultbranch" {
   description = "The default git branch"
   type        = string
-  default     = "master"
+  default     = "main"
 }
 
 variable "custom_ecs_cluster" {
