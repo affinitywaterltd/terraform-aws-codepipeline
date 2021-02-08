@@ -177,7 +177,7 @@ locals {
           input_artifacts  = ["BuildArtifact"]
           output_artifacts = []
           configuration = {
-            ActionMode    = "CHANGE_SET_REPLACE"
+            ActionMode    = "CHANGE_SET_EXECUTE"
             Capabilities  = "CAPABILITY_IAM"
             StackName     = "${var.name}-cloudformation-stack"
             TemplatePath  = "BuildArtifact::cfn-template.yml"
@@ -264,7 +264,7 @@ locals {
           input_artifacts  = ["BuildArtifact"]
           output_artifacts = []
           configuration = {
-            ActionMode    = "CHANGE_SET_REPLACE"
+            ActionMode    = "CHANGE_SET_EXECUTE"
             Capabilities  = "CAPABILITY_IAM"
             StackName     = "${var.name}-cloudformation-stack"
             TemplatePath  = "BuildArtifact::cfn-template.yml"
