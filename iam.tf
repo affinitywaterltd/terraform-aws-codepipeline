@@ -265,7 +265,7 @@ resource "aws_iam_role" "pipeline" {
         {
             "Effect": "Allow",
             "Principal": {
-                "Service": ${jsonencode(compact(concat(["codepipeline.amazonaws.com"], var.codecommit_role_arn)))}
+                "Service": ${jsonencode(compact(concat(["codepipeline.amazonaws.com"], [var.codecommit_role_arn])))}
                 ]
             },
             "Action": "sts:AssumeRole"
