@@ -477,7 +477,7 @@ resource "aws_iam_role_policy_attachment" "cloudformation_policy" {
 ####### CrossAccount ########
 #############################
 resource "aws_iam_role" "AWSCodeCommitRoleCrossAccount" {
-  count = var.enable_cross_account_role
+  count = var.enable_cross_account_role ? 1 : 0
   name = "AWSCodeCommitCrossAccountRole-${data.aws_region.current.name}-${var.name}"
   assume_role_policy = <<EOF
 {
@@ -494,11 +494,11 @@ resource "aws_iam_role" "AWSCodeCommitRoleCrossAccount" {
 }
 EOF
 
-  tags = local.common_tags
+  tags =  var.tags
 }
 
 resource "aws_iam_role_policy" "AWSCodeCommitRoleCrossAccount_policy" {
-  count = var.enable_cross_account_role
+  count = var.enable_cross_account_role ? 1 : 0
 
   name = "AWSCodeCommitRoleCrossAccount-${data.aws_region.current.name}-${var.name}-policy"
   role = aws_iam_role.AWSCodeCommitRoleCrossAccount.0.name
