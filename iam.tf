@@ -293,7 +293,7 @@ resource "aws_iam_role_policy" "pipeline_assume_role_policy" {
             "Action": [
                 "sts:AssumeRole"
             ],
-            "Resource": "${jsonencode(var.cross_account_role_account_princpals)}"
+            "Resource": ${jsonencode(var.cross_account_role_account_princpals)}
         }
     ]
 }
