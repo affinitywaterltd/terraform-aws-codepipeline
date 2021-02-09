@@ -51,6 +51,12 @@ variable "cross_account_role_account_princpals"{
   default = []
 }
 
+variable "cross_account_s3_bucket_name"{
+  description = "Supply the S3 bucket to output cross account artifacts"
+  type = string
+  default = ""
+}
+
 variable "create_codecommit"{
   description = "Determine whether a codecommit is created"
   type = bool

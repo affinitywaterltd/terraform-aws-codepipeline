@@ -561,8 +561,8 @@ resource "aws_iam_role_policy" "AWSCodeCommitRoleCrossAccount_policy" {
             "s3:GetBucketLocation"
         ],
         "Resource": [
-            "arn:aws:s3:::${local.bucketname}",
-            "arn:aws:s3:::${local.bucketname}/*"
+            "arn:aws:s3:::${local.cross_account_s3_bucket_name}",
+            "arn:aws:s3:::${local.cross_account_s3_bucket_name}/*"
         ]
     },
     {
