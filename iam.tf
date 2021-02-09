@@ -278,7 +278,7 @@ POLICY
 }
 
 resource "aws_iam_role_policy" "pipeline_assume_role_policy" {
-  count = length(var.cross_account_role_account_princpals) > 0 ? 1 : 0
+  count = local.codecommit_role_arn != "" ? 1 : 0
 
   name  = "codepipeline-assume-cross-account-role-${var.name}"
   role  = aws_iam_role.pipeline[0].name
@@ -293,7 +293,7 @@ resource "aws_iam_role_policy" "pipeline_assume_role_policy" {
             "Action": [
                 "sts:AssumeRole"
             ],
-            "Resource": ${jsonencode(var.cross_account_role_account_princpals)}
+            "Resource": ${jsonencode(local.codecommit_role_arn)}
         }
     ]
 }
