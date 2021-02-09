@@ -277,6 +277,30 @@ POLICY
   tags = var.tags
 }
 
+resource "aws_iam_role_policy" "pipeline_assume_role_policy" {
+  count = var.enable_cross_account_role ? 1 : 0
+
+  name  = "codepipeline-assume-cross-account-role-${var.name}"
+  role  = aws_iam_role.pipeline[0].name
+
+  policy = <<JSON
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "VisualEditor0",
+            "Effect": "Allow",
+            "Action": [
+                "sts:AssumeRole"
+            ],
+            "Resource": "${local.codecommit_role_arn}"
+        }
+    ]
+}
+JSON
+}
+
+
 resource "aws_iam_role_policy" "inline_policy" {
   count = var.role_arn == "" && var.create_codepipeline ? 1 : 0
   name  = "AWSCodePipeline-${data.aws_region.current.name}-${var.name}"
