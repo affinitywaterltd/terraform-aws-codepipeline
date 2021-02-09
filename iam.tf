@@ -426,13 +426,42 @@ POLICY
   tags = var.tags
 }
 
+resource "aws_iam_role_policy" "cloudformation_changeset_policy" {
+  count = var.cloudformation_role_arn == "" && (var.create_codepipeline || contains(split("_", var.preconfigured_stage_config), "CLOUDFORMATION")) ? 1 : 0
+
+  name  = "cloudformationpolicy-${var.name}"
+  role  = aws_iam_role.cloudformation[0].name
+
+  policy = <<JSON
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "VisualEditor0",
+            "Effect": "Allow",
+            "Action": [
+                "cloudformation:CreateChangeSet"
+            ],
+            "Resource": "*"
+        }
+    ]
+}
+JSON
+}
+
+resource "aws_iam_role_policy_attachment" "AWSCloudformationRole_changeset_policy" {
+  count = var.cloudformation_role_arn == "" && (var.create_codepipeline || contains(split("_", var.preconfigured_stage_config), "CLOUDFORMATION")) ? 1 : 0
+
+  policy_arn = aws_iam_role_policy.cloudformation_changeset_policy.arn
+  role       = aws_iam_role.cloudformation[0].name
+}
+
 resource "aws_iam_role_policy_attachment" "AWSCloudformationRole_policy" {
   count = var.cloudformation_role_arn == "" && (var.create_codepipeline || contains(split("_", var.preconfigured_stage_config), "CLOUDFORMATION")) ? 1 : 0
 
   policy_arn = "arn:aws:iam::aws:policy/AWSCloudFormationReadOnlyAccess"
   role       = aws_iam_role.cloudformation[0].name
 }
-
 
 resource "aws_iam_role_policy_attachment" "cloudformation_policy" {
   count = length(var.cloudformation_iam_policies) > 0 ? length(var.cloudformation_iam_policies) : 0
