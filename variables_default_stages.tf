@@ -122,6 +122,7 @@ locals {
           owner    = "AWS"
           provider = "CodeCommit"
           version  = "1"
+          role_arn = var.codecommit_role_arn == "" ? null : var.codecommit_role_arn
           configuration = {
             BranchName           = var.defaultbranch
             PollForSourceChanges = "false"
