@@ -445,7 +445,7 @@ resource "aws_iam_role_policy" "cloudformation_changeset_policy" {
             "Resource": "*"
         },
         {
-            "Sid": "VisualEditor0",
+            "Sid": "VisualEditor1",
             "Effect": "Allow",
             "Action": [
                 "s3:GetObject"
