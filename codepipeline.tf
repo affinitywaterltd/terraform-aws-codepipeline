@@ -6,7 +6,7 @@ resource "aws_codepipeline" "this" {
     type     = var.artifact_store_type
 
     encryption_key {
-      id   = var.artifact_store_encryption_key_id == "" ? aws_kms_key.kms_pipeline_key.arn : var.artifact_store_encryption_key_id
+      id   = var.artifact_store_encryption_key_id == "" ? aws_kms_key.kms_pipeline_key.0.arn : var.artifact_store_encryption_key_id
       type = var.artifact_store_encryption_type
     }
   }

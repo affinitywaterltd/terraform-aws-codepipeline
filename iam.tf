@@ -552,7 +552,7 @@ resource "aws_iam_role_policy" "AWSCodeCommitRoleCrossAccount_policy" {
             "kms:DescribeKey"
         ],
         "Resource": [
-            "${aws_kms_key.kms_pipeline_key.arn}"
+            "${aws_kms_key.kms_pipeline_key.0.arn}"
         ]
     }
   ]
