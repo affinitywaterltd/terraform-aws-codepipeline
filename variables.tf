@@ -13,11 +13,27 @@ locals {
 }
 
 locals {
-  role_arn = var.role_arn == "" &&  var.create_codepipeline ? aws_iam_role.pipeline.0.arn : var.role_arn
+  codepipeline_role_arn = var.codepipeline_role_arn == "" &&  var.create_codepipeline ? aws_iam_role.pipeline.0.arn : var.codepipeline_role_arn
+  codedeploy_role_arn = var.codedeploy_role_arn == "" ? aws_iam_role.pipeline.0.arn : var.codedeploy_role_arn
+  cloudformation_role_arn = var.cloudformation_role_arn == "" ? aws_iam_role.cloudformation.0.arn : var.cloudformation_role_arn
+
+  codecommit_repo_arn = var.create_codecommit && var.codecommit_repo_arn == "" ? aws_codecommit_repository.this.0.arn : var.codecommit_repo_arn
 }
 
 variable "cloudformation_iam_role"{
   description = "Determine ARN of the Role used for Cloudformation Deployments"
+  type = string
+  default = ""
+}
+
+variable "codedeploy_iam_role"{
+  description = "Determine ARN of the Role used for CodeDeploy"
+  type = string
+  default = ""
+}
+
+variable "codepipeline_iam_role"{
+  description = "Determine ARN of the Role used for CodePipeline"
   type = string
   default = ""
 }
@@ -38,6 +54,12 @@ variable "create_codecommit"{
   description = "Determine whether a codecommit is created"
   type = bool
   default = false
+}
+
+variable "codecommit_repo_arn"{
+  description = "Determine the codecommit repo to reference"
+  type = string
+  default = ""
 }
 
 variable "codedeploy_compute_platform"{
@@ -215,6 +237,12 @@ variable "role_arn" {
 }
 
 variable "cloudformation_role_arn" {
+  type        = string
+  description = "Optionally supply an existing role"
+  default     = ""
+}
+
+variable "codecommit_role_arn" {
   type        = string
   description = "Optionally supply an existing role"
   default     = ""

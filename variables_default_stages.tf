@@ -162,7 +162,7 @@ locals {
             StackName     = "${var.name}-cloudformation-stack"
             TemplatePath  = "BuildArtifact::cfn-template.yml"
             ChangeSetName = "${var.name}-cloudformation-changeset"
-            RoleArn       = var.cloudformation_role_arn == "" ? element(concat(aws_iam_role.cloudformation.*.arn, list("")), 0) : var.cloudformation_role_arn
+            RoleArn       = local.cloudformation_role_arn
           }
         }
       },
@@ -182,7 +182,7 @@ locals {
             StackName     = "${var.name}-cloudformation-stack"
             TemplatePath  = "BuildArtifact::cfn-template.yml"
             ChangeSetName = "${var.name}-cloudformation-changeset"
-            RoleArn       = var.cloudformation_role_arn == "" ? element(concat(aws_iam_role.cloudformation.*.arn, list("")), 0) : var.cloudformation_role_arn
+            RoleArn       = local.cloudformation_role_arn
           }
         }
       }
@@ -236,7 +236,7 @@ locals {
             StackName     = "${var.name}-cloudformation-stack"
             TemplatePath  = "BuildArtifact::cfn-template.yml"
             ChangeSetName = "${var.name}-cloudformation-changeset"
-            RoleArn       = var.cloudformation_role_arn == "" ? element(concat(aws_iam_role.cloudformation.*.arn, list("")), 0) : var.cloudformation_role_arn
+            RoleArn       = local.cloudformation_role_arn
           }
         }
       },
@@ -269,7 +269,7 @@ locals {
             StackName     = "${var.name}-cloudformation-stack"
             TemplatePath  = "BuildArtifact::cfn-template.yml"
             ChangeSetName = "${var.name}-cloudformation-changeset"
-            RoleArn       = var.cloudformation_role_arn == "" ? element(concat(aws_iam_role.cloudformation.*.arn, list("")), 0) : var.cloudformation_role_arn
+            RoleArn       = local.cloudformation_role_arn
           }
         }
       }

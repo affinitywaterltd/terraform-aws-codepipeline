@@ -211,7 +211,7 @@ resource "aws_iam_role_policy" "codecommit_policy" {
                 "codecommit:GetBranch",
                 "codecommit:GetMergeConflicts"
             ],
-            "Resource": "arn:aws:codecommit:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:${var.reponame}"
+            "Resource": "${local.codecommit_repo_arn}"
         }
     ]
 }
@@ -526,7 +526,7 @@ resource "aws_iam_role_policy" "AWSCodeCommitRoleCrossAccount_policy" {
             "codecommit:UploadArchive"
         ],
         "Resource": [
-            "arn:aws:codecommit:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:${var.name}"
+            "${local.codecommit_repo_arn}"
         ]
     },
     {
