@@ -440,7 +440,7 @@ resource "aws_iam_role_policy" "cloudformation_changeset_policy" {
             "Sid": "VisualEditor0",
             "Effect": "Allow",
             "Action": [
-                "cloudformation:CreateChangeSet",
+                "cloudformation:CreateChangeSet"
             ],
             "Resource": "*"
         },
@@ -448,7 +448,7 @@ resource "aws_iam_role_policy" "cloudformation_changeset_policy" {
             "Sid": "VisualEditor0",
             "Effect": "Allow",
             "Action": [
-                "s3:GetObject",
+                "s3:GetObject"
             ],
             "Resource": "${local.bucketname}/*"
         }
