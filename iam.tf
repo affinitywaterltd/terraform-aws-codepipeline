@@ -449,13 +449,6 @@ resource "aws_iam_role_policy" "cloudformation_changeset_policy" {
 JSON
 }
 
-resource "aws_iam_role_policy_attachment" "AWSCloudformationRole_changeset_policy" {
-  count = var.cloudformation_role_arn == "" && (var.create_codepipeline || contains(split("_", var.preconfigured_stage_config), "CLOUDFORMATION")) ? 1 : 0
-
-  policy_arn = aws_iam_role_policy.cloudformation_changeset_policy.arn
-  role       = aws_iam_role.cloudformation[0].name
-}
-
 resource "aws_iam_role_policy_attachment" "AWSCloudformationRole_policy" {
   count = var.cloudformation_role_arn == "" && (var.create_codepipeline || contains(split("_", var.preconfigured_stage_config), "CLOUDFORMATION")) ? 1 : 0
 
