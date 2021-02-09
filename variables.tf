@@ -202,6 +202,18 @@ variable "role_arn" {
   default     = ""
 }
 
+variable "cloudformation_role_arn" {
+  type        = string
+  description = "Optionally supply an existing role"
+  default     = ""
+}
+
+variable "cloudformation_iam_policies" {
+  type        = list
+  description = "Optionally supply IAM policies to add to teh Cloudformation Role"
+  default     = []
+}
+
 variable "stages" {
   type        = list(any)
   description = "This list describes each stage of the build"

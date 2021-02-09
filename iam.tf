@@ -54,7 +54,7 @@ resource "aws_iam_role_policy_attachment" "attachtotriggerrole" {
 resource "aws_iam_role" "codebuild" {
   count = var.role == "" && (var.create_codebuild || contains(split("_", var.preconfigured_stage_config), "CODEBUILD")) ? 1 : 0
 
-  name  = "codebuildrole-${var.name}"
+  name  = "AWSCodeBuildRole-${var.name}"
   assume_role_policy = <<HERE
 {
     "Version": "2012-10-17",
@@ -266,8 +266,7 @@ resource "aws_iam_role" "pipeline" {
             "Effect": "Allow",
             "Principal": {
                 "Service": [
-                  "codepipeline.amazonaws.com",
-                  "cloudformation.amazonaws.com"
+                  "codepipeline.amazonaws.com"
                 ]
             },
             "Action": "sts:AssumeRole"
@@ -395,4 +394,49 @@ data "aws_iam_policy_document" "pipeline" {
 
     resources = ["*"]
   }
+}
+
+
+
+#############################
+###### CloudFormation #######
+#############################
+resource "aws_iam_role" "cloudformation" {
+  count = var.cloudformation_role_arn == "" && (var.create_codepipeline || contains(split("_", var.preconfigured_stage_config), "CLOUDFORMATION")) ? 1 : 0
+  name  = "AWSCloudFormationServiceRole-${data.aws_region.current.name}-${var.name}"
+  path  = "/service-role/"
+
+  assume_role_policy = <<POLICY
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Principal": {
+                "Service": [
+                  "cloudformation.amazonaws.com"
+                ]
+            },
+            "Action": "sts:AssumeRole"
+        }
+    ]
+}
+POLICY
+
+  tags = var.tags
+}
+
+resource "aws_iam_role_policy_attachment" "AWSCodeDeployRole" {
+  count = var.cloudformation_role_arn == "" && (var.create_codepipeline || contains(split("_", var.preconfigured_stage_config), "CLOUDFORMATION")) ? 1 : 0
+
+  policy_arn = "arn:aws:iam::aws:policy/AWSCloudFormationReadOnlyAccess"
+  role       = aws_iam_role.cloudformation[0].name
+}
+
+
+resource "aws_iam_role_policy_attachment" "cloudformation_policy" {
+  count = length(var.cloudformation_iam_policies) > 0 ? length(var.cloudformation_iam_policies) : 0
+
+  role       = var.cloudformation_role_arn == "" ? aws_iam_role.cloudformation.0.arn : var.cloudformation_role_arn 
+  policy_arn = element(var.cloudformation_iam_policies, count.index)
 }
