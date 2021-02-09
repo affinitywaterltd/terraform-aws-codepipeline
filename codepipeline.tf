@@ -26,7 +26,7 @@ resource "aws_codepipeline" "this" {
       action {
         name             = stage.value.action["name"]
         owner            = stage.value.action["owner"]
-        role_arn         = stage.value.action["role_arn"]
+        role_arn         = try(stage.value.action["role_arn"], null)
         version          = stage.value.action["version"]
         category         = stage.value.action["category"]
         provider         = stage.value.action["provider"]
