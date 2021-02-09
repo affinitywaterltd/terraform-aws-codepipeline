@@ -1,4 +1,4 @@
-data "aws_caller_identity" "current" {}
+  data "aws_caller_identity" "current" {}
 
 data "aws_iam_role" "existing" {
   count = var.role == "" ? 0 : 1
@@ -16,6 +16,7 @@ locals {
   codepipeline_role_arn = var.codepipeline_iam_role == "" &&  var.create_codepipeline ? element(concat(aws_iam_role.pipeline.*.arn, list("")), 0) : var.codepipeline_iam_role
   codedeploy_role_arn = var.codedeploy_iam_role == "" ? element(concat(aws_iam_role.pipeline.*.arn, list("")), 0) : var.codedeploy_iam_role
   cloudformation_role_arn = var.cloudformation_iam_role == "" ? element(concat(aws_iam_role.cloudformation.*.arn, list("")), 0) : var.cloudformation_iam_role
+  codecommit_role_arn = var.codecommit_role_arn = "" && enable_cross_account_role == false ?element(concat( aws_iam_role.AWSCodeCommitRoleCrossAccount.0.arn, list("")), 0) : var.codecommit_role_arn
 
   codecommit_repo_arn = var.create_codecommit && var.codecommit_repo_arn == "" ? aws_codecommit_repository.this.0.arn : var.codecommit_repo_arn
 }
