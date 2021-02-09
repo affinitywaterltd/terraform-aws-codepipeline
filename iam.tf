@@ -437,6 +437,6 @@ resource "aws_iam_role_policy_attachment" "AWSCloudformationRole_policy" {
 resource "aws_iam_role_policy_attachment" "cloudformation_policy" {
   count = length(var.cloudformation_iam_policies) > 0 ? length(var.cloudformation_iam_policies) : 0
 
-  role       = var.cloudformation_role_arn == "" ? aws_iam_role.cloudformation.0.arn : var.cloudformation_role_arn 
   policy_arn = element(var.cloudformation_iam_policies, count.index)
+  role       = var.cloudformation_role_arn == "" ? aws_iam_role.cloudformation.0.name : var.cloudformation_role_arn 
 }
