@@ -526,7 +526,7 @@ resource "aws_iam_role_policy" "AWSCodeCommitRoleCrossAccount_policy" {
             "codecommit:UploadArchive"
         ],
         "Resource": [
-            "arn:aws:codecommit:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:${var.reponame}"
+            "arn:aws:codecommit:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:${var.name}"
         ]
     },
     {
