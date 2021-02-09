@@ -450,7 +450,7 @@ resource "aws_iam_role_policy" "cloudformation_changeset_policy" {
             "Action": [
                 "s3:GetObject"
             ],
-            "Resource": "${local.bucketname}/*"
+            "Resource": "arn:aws:s3:::${local.bucketname}/*"
         }
     ]
 }
