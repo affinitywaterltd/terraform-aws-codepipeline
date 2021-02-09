@@ -12,7 +12,7 @@ resource "aws_codepipeline" "this" {
   }
 
   name     = var.name
-  role_arn = local.codepipeline_iam_role
+  role_arn = local.codepipeline_role_arn
 
 
   dynamic "stage" {
