@@ -278,7 +278,7 @@ POLICY
 }
 
 resource "aws_iam_role_policy" "pipeline_assume_role_policy" {
-  count = var.enable_cross_account_role ? 1 : 0
+  count = length(var.cross_account_role_account_princpals) > 0 ? 1 : 0
 
   name  = "codepipeline-assume-cross-account-role-${var.name}"
   role  = aws_iam_role.pipeline[0].name
