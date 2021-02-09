@@ -22,6 +22,18 @@ variable "cloudformation_iam_role"{
   default = ""
 }
 
+variable "enable_cross_account_role"{
+  description = "Determine If a cross account IAM role is created"
+  type = bool
+  default = false
+}
+
+variable "cross_account_role_account_princpals"{
+  description = "Supply the account ids used if a cross account IAM role is created"
+  type = list(string)
+  default = []
+}
+
 variable "create_codecommit"{
   description = "Determine whether a codecommit is created"
   type = bool

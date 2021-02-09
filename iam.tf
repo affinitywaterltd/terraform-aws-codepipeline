@@ -470,3 +470,93 @@ resource "aws_iam_role_policy_attachment" "cloudformation_policy" {
   policy_arn = element(var.cloudformation_iam_policies, count.index)
   role       = var.cloudformation_role_arn == "" ? aws_iam_role.cloudformation.0.name : var.cloudformation_role_arn 
 }
+
+
+
+#############################
+####### CrossAccount ########
+#############################
+resource "aws_iam_role" "AWSCodeCommitRoleCrossAccount" {
+  count = var.enable_cross_account_role
+  name = "AWSCodeCommitCrossAccountRole-${data.aws_region.current.name}-${var.name}"
+  assume_role_policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Principal": {
+        "AWS": ${jsonencode(var.cross_account_role_account_princpals)}
+      },
+      "Action": "sts:AssumeRole"
+    }
+  ]
+}
+EOF
+
+  tags = local.common_tags
+}
+
+resource "aws_iam_role_policy" "AWSCodeCommitRoleCrossAccount_policy" {
+  count = var.enable_cross_account_role
+
+  name = "AWSCodeCommitRoleCrossAccount-${data.aws_region.current.name}-${var.name}-policy"
+  role = aws_iam_role.AWSCodeCommitRoleCrossAccount.0.name
+
+  policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+        "Effect": "Allow",
+        "Action": [
+            "codecommit:BatchGet*",
+            "codecommit:Create*",
+            "codecommit:DeleteBranch",
+            "codecommit:Get*",
+            "codecommit:List*",
+            "codecommit:Describe*",
+            "codecommit:Put*",
+            "codecommit:Post*",
+            "codecommit:Merge*",
+            "codecommit:Test*",
+            "codecommit:Update*",
+            "codecommit:GitPull",
+            "codecommit:GitPush",
+            "codecommit:UploadArchive"
+        ],
+        "Resource": [
+            "arn:aws:codecommit:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:${var.reponame}"
+        ]
+    },
+    {
+        "Effect": "Allow",
+        "Action": [
+            "s3:PutObject",
+            "s3:GetObject",
+            "s3:GetBucketAcl",
+            "s3:GetBucketLocation"
+        ],
+        "Resource": [
+            "arn:aws:s3:::${local.bucketname}",
+            "arn:aws:s3:::${local.bucketname}/*"
+        ]
+    },
+    {
+        "Effect": "Allow",
+        "Action": [
+            "kms:Encrypt",
+            "kms:Decrypt",
+            "kms:ReEncrypt*",
+            "kms:GenerateDataKey*",
+            "kms:DescribeKey"
+        ],
+        "Resource": [
+            "${aws_kms_key.kms_pipeline_key.arn}"
+        ]
+    }
+  ]
+}
+EOF
+
+}
