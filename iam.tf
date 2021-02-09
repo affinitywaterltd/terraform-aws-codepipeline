@@ -426,7 +426,7 @@ POLICY
   tags = var.tags
 }
 
-resource "aws_iam_role_policy_attachment" "AWSCodeDeployRole" {
+resource "aws_iam_role_policy_attachment" "AWSCloudformationRole_policy" {
   count = var.cloudformation_role_arn == "" && (var.create_codepipeline || contains(split("_", var.preconfigured_stage_config), "CLOUDFORMATION")) ? 1 : 0
 
   policy_arn = "arn:aws:iam::aws:policy/AWSCloudFormationReadOnlyAccess"
