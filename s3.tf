@@ -36,7 +36,7 @@ data "aws_iam_policy_document" "artifacts_policy" {
   statement {
     principals {
       type        = "AWS"
-      identifiers = ["${var.enable_cross_account_role ? aws_iam_role.AWSCodeCommitRoleCrossAccount.0.arn : var.codecommit_role_arn}"]
+      identifiers = ["${local.codecommit_role_arn}"]
     }
 
     actions = [
@@ -47,8 +47,8 @@ data "aws_iam_policy_document" "artifacts_policy" {
     ]
 
     resources = [
-      "arn:aws:s3:::${var.cross_account_s3_bucket_name == "" ? local.bucketname : var.cross_account_s3_bucket_name}/*",
-      "arn:aws:s3:::${var.cross_account_s3_bucket_name == "" ? local.bucketname : var.cross_account_s3_bucket_name}",
+      "arn:aws:s3:::${local.bucketname}/*",
+      "arn:aws:s3:::${local.bucketname}"
     ]
   }
 }
