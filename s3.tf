@@ -36,7 +36,7 @@ data "aws_iam_policy_document" "artifacts_policy" {
   statement {
     principals {
       type        = "AWS"
-      identifiers = [var.cross_account_role_account_princpals == "" ? local.codecommit_role_arn : var.cross_account_role_account_princpals]
+      identifiers = var.cross_account_role_account_princpals == "" ? [local.codecommit_role_arn] : var.cross_account_role_account_princpals
     }
 
     actions = [
