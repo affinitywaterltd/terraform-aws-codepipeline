@@ -36,7 +36,7 @@ data "aws_iam_policy_document" "artifacts_policy" {
   statement {
     principals {
       type        = "AWS"
-      identifiers = jsonencode(concat([local.codecommit_role_arn], [local.codepipeline_role_arn]))
+      identifiers = ["${local.codecommit_role_arn}"]
     }
 
     actions = [
