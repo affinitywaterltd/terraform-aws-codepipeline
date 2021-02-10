@@ -48,6 +48,7 @@ data "aws_iam_policy_document" "artifacts_policy" {
 
     resources = [
       "arn:aws:s3:::${var.cross_account_s3_bucket_name == "" ? local.bucketname : var.cross_account_s3_bucket_name}/*",
+      "arn:aws:s3:::${var.cross_account_s3_bucket_name == "" ? local.bucketname : var.cross_account_s3_bucket_name}",
     ]
   }
 }
