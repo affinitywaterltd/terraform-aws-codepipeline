@@ -26,5 +26,27 @@ module "artifacts" {
   bucket = "${local.bucketname}-test"
   default_logging_enabled = false
 
+  policy = data.aws_iam_policy_document.artifacts_policy.json
+
   tags = var.tags
+}
+
+data "aws_iam_policy_document" "artifacts_policy" {
+  statement {
+    principals {
+      type        = "AWS"
+      identifiers = ["${var.cross_account_role_account_princpals == "" ? local.codepipeline_role_arn : var.cross_account_role_account_princpals}"]
+    }
+
+    actions = [
+      "s3:PutObject",
+      "s3:GetObject",
+      "s3:GetBucketAcl",
+      "s3:GetBucketLocation"
+    ]
+
+    resources = [
+      "arn:aws:s3:::${var.cross_account_s3_bucket_name == "" ? local.bucketname : var.cross_account_s3_bucket_name}/*",
+    ]
+  }
 }
