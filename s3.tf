@@ -36,7 +36,7 @@ data "aws_iam_policy_document" "artifacts_policy" {
   statement {
     principals {
       type        = "AWS"
-      identifiers = [var.enable_cross_account_role ? element(concat( aws_iam_role.AWSCodeCommitRoleCrossAccount.0.arn, list("")), 0) : var.codecommit_role_arn]
+      identifiers = var.enable_cross_account_role ? [element(concat( aws_iam_role.AWSCodeCommitRoleCrossAccount.0.arn, list("")), 0)] : [var.codecommit_role_arn]
     }
 
     actions = [
