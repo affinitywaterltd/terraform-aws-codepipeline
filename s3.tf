@@ -19,3 +19,12 @@ resource "aws_s3_bucket" "artifacts" {
 
   tags = var.tags
 }
+
+module "artifacts" {
+  count  = var.bucketname == "" ? 1 : 0
+  source = "github.com/affinitywaterltd/terraform-aws-s3"
+  bucket = "${local.bucketname}-test"
+  default_logging_enabled = false
+
+  tags = var.tags
+}
