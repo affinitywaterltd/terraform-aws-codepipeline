@@ -26,6 +26,7 @@ module "artifacts" {
   bucket = "${local.bucketname}-test"
   default_logging_enabled = false
 
+  attach_policy = true
   policy = data.aws_iam_policy_document.artifacts_policy.json
 
   tags = var.tags
