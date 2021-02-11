@@ -555,10 +555,21 @@ resource "aws_iam_role_policy" "AWSCodeCommitRoleCrossAccount_policy" {
     {
         "Effect": "Allow",
         "Action": [
-            "s3:PutObject",
-            "s3:GetObject",
+             "s3:ListBucket",
+            "s3:GetBucketLocation",
+        ],
+        "Resource": [
+            "arn:aws:s3:::${var.cross_account_s3_bucket_name}"
+        ]
+    },,
+    {
+        "Effect": "Allow",
+        "Action": [
             "s3:GetBucketAcl",
-            "s3:GetBucketLocation"
+            "s3:GetObject",
+            "s3:GetObjectAcl",
+            "s3:PutObject",
+            "s3:PutObjectAcl"
         ],
         "Resource": [
             "arn:aws:s3:::${var.cross_account_s3_bucket_name}",

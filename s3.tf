@@ -18,11 +18,26 @@ data "aws_iam_policy_document" "artifacts_policy" {
     }
 
     actions = [
-      "s3:PutObject",
-      "s3:GetObject",
+      "s3:ListBucket",
+      "s3:GetBucketLocation"
+    ]
+
+    resources = [
+      "arn:aws:s3:::${local.bucketname}"
+    ]
+  },
+  {
+    principals {
+      type        = "AWS"
+      identifiers = var.codecommit_role_arn == "" ? compact(list(local.codepipeline_role_arn, "")) : compact(list(local.codepipeline_role_arn, local.codecommit_role_arn, ""))
+    }
+
+    actions = [
       "s3:GetBucketAcl",
-      "s3:GetBucketLocation",
-      "s3:ListBucket"
+      "s3:GetObject",
+      "s3:GetObjectAcl",
+      "s3:PutObject",
+      "s3:PutObjectAcl"
     ]
 
     resources = [
