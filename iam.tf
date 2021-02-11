@@ -426,7 +426,7 @@ data "aws_iam_policy_document" "pipeline" {
 #############################
 resource "aws_iam_role" "cloudformation" {
   count = var.cloudformation_role_arn == "" && (var.create_codepipeline || contains(split("_", var.preconfigured_stage_config), "CLOUDFORMATION")) ? 1 : 0
-  name  = "AWSCloudFormationServiceRole-${data.aws_region.current.name}-${var.name}"
+  name  = "AWSCloudFormationRole-${data.aws_region.current.name}-${var.name}"
   path  = "/service-role/"
 
   assume_role_policy = <<POLICY
