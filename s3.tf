@@ -21,7 +21,8 @@ data "aws_iam_policy_document" "artifacts_policy" {
       "s3:PutObject",
       "s3:GetObject",
       "s3:GetBucketAcl",
-      "s3:GetBucketLocation"
+      "s3:GetBucketLocation",
+      "s3:ListBucket"
     ]
 
     resources = [
