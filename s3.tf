@@ -2,7 +2,7 @@ module "artifacts" {
   count  = var.bucketname == "" ? 1 : 0
   source = "github.com/affinitywaterltd/terraform-aws-s3"
   bucket = local.bucketname
-  default_logging_enabled = false
+  default_logging_bucket = var.default_logging_bucket
 
   attach_policy = true
   policy = data.aws_iam_policy_document.artifacts_policy.json

@@ -27,6 +27,12 @@ variable "cloudformation_iam_role"{
   default = ""
 }
 
+variable "default_logging_bucket"{
+  description = "Default S3 bucket logging location"
+  type = string
+  default = null
+}
+
 variable "codedeploy_iam_role"{
   description = "Determine ARN of the Role used for CodeDeploy"
   type = string
