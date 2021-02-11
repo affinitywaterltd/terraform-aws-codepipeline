@@ -1,7 +1,7 @@
 module "artifacts" {
   count  = var.bucketname == "" ? 1 : 0
   source = "github.com/affinitywaterltd/terraform-aws-s3"
-  bucket = "${local.bucketname}"
+  bucket = local.bucketname
   default_logging_enabled = false
 
   attach_policy = true
@@ -14,7 +14,7 @@ data "aws_iam_policy_document" "artifacts_policy" {
   statement {
     principals {
       type        = "AWS"
-      identifiers = ["${var.codecommit_role_arn == "" ? local.codepipeline_role_arn : local.codecommit_role_arn}"]
+      identifiers = var.codecommit_role_arn == "" ? jsonencode(local.codepipeline_role_arn) : jsonencode(local.codecommit_role_arn)
     }
 
     actions = [
