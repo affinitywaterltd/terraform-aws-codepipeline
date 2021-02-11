@@ -278,7 +278,7 @@ POLICY
 }
 
 resource "aws_iam_role_policy" "pipeline_assume_role_policy" {
-  count = var.codepipeline_iam_role == "" && var.create_codepipeline != "" && var.enable_cross_account_role  ? 1 : 0
+  count = var.codepipeline_iam_role == "" && var.create_codepipeline && var.enable_cross_account_role  ? 1 : 0
 
   name  = "codepipeline-assume-cross-account-role-${var.name}"
   role  = aws_iam_role.pipeline[0].name
@@ -302,7 +302,7 @@ JSON
 
 
 resource "aws_iam_role_policy" "inline_policy" {
-  count = var.role_arn == "" && var.create_codepipeline ? 1 : 0
+  count = var.codepipeline_iam_role == "" && var.create_codepipeline ? 1 : 0
   name  = "AWSCodePipeline-${data.aws_region.current.name}-${var.name}"
   role  = aws_iam_role.pipeline.0.name
 
