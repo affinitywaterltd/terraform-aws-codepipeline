@@ -14,7 +14,7 @@ data "aws_iam_policy_document" "artifacts_policy" {
   statement {
     principals {
       type        = "AWS"
-      identifiers = ${jsonencode(compact(concat(local.codepipeline_role_arn, jsonencode(local.codecommit_role_arn,local.cloudformation_role_arn, list(""))))}
+      identifiers = ${jsonencode(compact(concat(local.codepipeline_role_arn, local.codecommit_role_arn,local.cloudformation_role_arn, list(""))))}
       #identifiers = var.codecommit_role_arn == "" ? [jsonencode(local.codepipeline_role_arn)] : [jsonencode(local.codecommit_role_arn)]
     }
 
