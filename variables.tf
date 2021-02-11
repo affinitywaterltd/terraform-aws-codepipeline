@@ -27,6 +27,13 @@ variable "cloudformation_iam_role"{
   default = ""
 }
 
+variable "cloudformation_region"{
+  description = "Set the region to deploy Cloudformation resources"
+  type = string
+  default = ""
+}
+
+
 variable "default_logging_bucket"{
   description = "Default S3 bucket logging location"
   type = string
