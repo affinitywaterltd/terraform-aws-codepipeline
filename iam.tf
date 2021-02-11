@@ -254,7 +254,7 @@ resource "aws_iam_role_policy_attachment" "AWSCodeDeployRole" {
 ####### CodePipeline ########
 #############################
 resource "aws_iam_role" "pipeline" {
-  count = var.role_arn == "" && var.create_codepipeline ? 1 : 0
+  count = var.codepipeline_role_arn == "" && var.create_codepipeline ? 1 : 0
   name  = "AWSCodePipelineServiceRole-${data.aws_region.current.name}-${var.name}"
   path  = "/service-role/"
 
@@ -278,7 +278,7 @@ POLICY
 }
 
 resource "aws_iam_role_policy" "pipeline_assume_role_policy" {
-  count = var.codecommit_role_arn != "" ? 1 : 0
+  count = var.codepipeline_role_arn == "" && var.create_codepipeline != "" ? 1 : 0
 
   name  = "codepipeline-assume-cross-account-role-${var.name}"
   role  = aws_iam_role.pipeline[0].name
