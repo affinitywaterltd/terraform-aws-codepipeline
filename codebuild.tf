@@ -24,7 +24,7 @@ resource "aws_codebuild_project" "this" {
 
     environment_variable {
       name = "ARTIFACT_S3_BUCKET"
-      value = try(lookup(var.cross_account_config, "s3_bucket_name"), local.s3_bucket_name)
+      value = try(lookup(var.cross_account_config, "s3_bucket_name"), local.bucketname)
     }
   }
 
