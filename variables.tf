@@ -23,7 +23,7 @@ locals {
 
 variable "cross_account_config" {
   description = "cross account configurations"
-  type        = map(any)
+  type        = any
   default     = {
     enabled = false
   }
