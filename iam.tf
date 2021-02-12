@@ -498,7 +498,7 @@ resource "aws_iam_role_policy_attachment" "cloudformation_policy" {
 ####### CrossAccount ########
 #############################
 resource "aws_iam_role" "AWSCodeCommitRoleCrossAccount" {
-  count = lookup(var.cross_account_config, "enabled") ? 1 : 0
+  count = try(lookup(var.cross_account_config, "enabled"), false) ? 1 : 0
   name = "AWSCodeCommitCrossAccountRole-${data.aws_region.current.name}-${var.name}"
   assume_role_policy = <<EOF
 {
@@ -507,7 +507,7 @@ resource "aws_iam_role" "AWSCodeCommitRoleCrossAccount" {
     {
       "Effect": "Allow",
       "Principal": {
-        "AWS": ${jsonencode(lookup(var.cross_account_config, "assume_role_princpals"))}
+        "AWS": ${jsonencode(try(lookup(var.cross_account_config, "assume_role_princpals"), ""))}
       },
       "Action": "sts:AssumeRole"
     }
@@ -519,7 +519,7 @@ EOF
 }
 
 resource "aws_iam_role_policy" "AWSCodeCommitRoleCrossAccount_policy" {
-  count = lookup(var.cross_account_config, "enabled") ? 1 : 0
+  count = try(lookup(var.cross_account_config, "enabled"), false) ? 1 : 0
 
   name = "AWSCodeCommitRoleCrossAccount-${data.aws_region.current.name}-${var.name}-policy"
   role = aws_iam_role.AWSCodeCommitRoleCrossAccount.0.name
@@ -557,7 +557,7 @@ resource "aws_iam_role_policy" "AWSCodeCommitRoleCrossAccount_policy" {
             "s3:GetBucketLocation"
         ],
         "Resource": [
-            "arn:aws:s3:::${lookup(var.cross_account_config, "s3_bucket_name")}"
+            "arn:aws:s3:::${try(lookup(var.cross_account_config, "s3_bucket_name"), "")}"
         ]
     },
     {
@@ -570,8 +570,8 @@ resource "aws_iam_role_policy" "AWSCodeCommitRoleCrossAccount_policy" {
             "s3:PutObjectAcl"
         ],
         "Resource": [
-            "arn:aws:s3:::${lookup(var.cross_account_config, "s3_bucket_name")}",
-            "arn:aws:s3:::${lookup(var.cross_account_config, "s3_bucket_name")}/*"
+            "arn:aws:s3:::${try(lookup(var.cross_account_config, "s3_bucket_name"), "")}",
+            "arn:aws:s3:::${try(lookup(var.cross_account_config, "s3_bucket_name"), "")}/*"
         ]
     },
     {
@@ -584,7 +584,7 @@ resource "aws_iam_role_policy" "AWSCodeCommitRoleCrossAccount_policy" {
             "kms:DescribeKey"
         ],
         "Resource": [
-            "${lookup(var.cross_account_config, "kms_key")}"
+            "${try(lookup(var.cross_account_config, "kms_key"), "")}"
         ]
     }
   ]
