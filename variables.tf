@@ -60,18 +60,6 @@ variable "codepipeline_iam_role"{
   default = ""
 }
 
-variable "enable_cross_account_role"{
-  description = "Determine If a cross account IAM role is created"
-  type = bool
-  default = false
-}
-
-variable "cross_account_role_account_princpals"{
-  description = "Supply the account ids used if a cross account IAM role is created"
-  type = list(string)
-  default = []
-}
-
 variable "cross_account_kms_key"{
   description = "Supply the KMS Key used if a cross account S3 is required"
   type = string

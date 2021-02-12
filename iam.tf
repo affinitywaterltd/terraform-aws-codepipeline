@@ -507,7 +507,7 @@ resource "aws_iam_role" "AWSCodeCommitRoleCrossAccount" {
     {
       "Effect": "Allow",
       "Principal": {
-        "AWS": ${jsonencode(var.cross_account_role_account_princpals)}
+        "AWS": ${jsonencode(lookup(var.cross_account_config, "assume_role_princpals"))}
       },
       "Action": "sts:AssumeRole"
     }
