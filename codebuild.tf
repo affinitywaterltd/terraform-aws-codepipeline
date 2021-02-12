@@ -22,7 +22,7 @@ resource "aws_codebuild_project" "this" {
     type            = var.environment["type"]
     privileged_mode = var.environment["privileged_mode"]
 
-    environment_variable = {
+    environment_variable {
       name = "ARTIFACT_S3_BUCKET"
       value = try(lookup(var.cross_account_config, "s3_bucket_name"), local.s3_bucket_name)
     }
