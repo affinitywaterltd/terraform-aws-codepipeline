@@ -557,7 +557,7 @@ resource "aws_iam_role_policy" "AWSCodeCommitRoleCrossAccount_policy" {
             "s3:GetBucketLocation"
         ],
         "Resource": [
-            "arn:aws:s3:::${var.cross_account_s3_bucket_name}"
+            "arn:aws:s3:::${lookup(var.cross_account_config, "s3_bucket_name")}"
         ]
     },
     {
@@ -570,8 +570,8 @@ resource "aws_iam_role_policy" "AWSCodeCommitRoleCrossAccount_policy" {
             "s3:PutObjectAcl"
         ],
         "Resource": [
-            "arn:aws:s3:::${var.cross_account_s3_bucket_name}",
-            "arn:aws:s3:::${var.cross_account_s3_bucket_name}/*"
+            "arn:aws:s3:::${lookup(var.cross_account_config, "s3_bucket_name")}",
+            "arn:aws:s3:::${lookup(var.cross_account_config, "s3_bucket_name")}/*"
         ]
     },
     {
@@ -584,7 +584,7 @@ resource "aws_iam_role_policy" "AWSCodeCommitRoleCrossAccount_policy" {
             "kms:DescribeKey"
         ],
         "Resource": [
-            "${var.cross_account_kms_key}"
+            "${lookup(var.cross_account_config, "kms_key")}"
         ]
     }
   ]
