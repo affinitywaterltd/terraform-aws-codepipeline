@@ -21,6 +21,11 @@ resource "aws_codebuild_project" "this" {
     image           = var.environment["image"]
     type            = var.environment["type"]
     privileged_mode = var.environment["privileged_mode"]
+
+    environment_variable = {
+      name = "ARTIFACT_S3_BUCKET"
+      value = try(lookup(var.cross_account_config, "s3_bucket_name"), local.s3_bucket_name)
+    }
   }
 
   source {
@@ -28,6 +33,8 @@ resource "aws_codebuild_project" "this" {
     location  = var.sourcecode["location"] == "" ? var.name : var.sourcecode["location"]
     buildspec = var.sourcecode["buildspec"]
   }
+
+
 
   tags = var.tags
 }
