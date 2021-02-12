@@ -122,7 +122,7 @@ locals {
           owner    = "AWS"
           provider = "CodeCommit"
           version  = "1"
-          role_arn = var.codecommit_role_arn == "" ? null : var.codecommit_role_arn
+          role_arn = try(lookup(var.cross_account_config, "code_commit_role_arn"), "") == "" ? null : lookup(var.cross_account_config, "code_commit_role_arn")
           configuration = {
             BranchName           = var.defaultbranch
             PollForSourceChanges = "false"
