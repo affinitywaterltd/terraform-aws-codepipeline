@@ -64,6 +64,12 @@ variable "cross_account_role_account_princpals"{
   default = []
 }
 
+variable "cross_account_kms_key"{
+  description = "Supply the KMS Key used if a cross account S3 is required"
+  type = string
+  default = ""
+}
+
 variable "cross_account_s3_bucket_name"{
   description = "Supply the S3 bucket to output cross account artifacts"
   type = string

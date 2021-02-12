@@ -24,7 +24,7 @@ count  =1
       "Sid": "Allow Key usage",
       "Effect": "Allow",
       "Principal": {
-        "AWS": ${jsonencode(compact(concat(aws_iam_role.pipeline.*.arn, aws_iam_role.codebuild.*.arn,aws_iam_role.cloudformation.*.arn, list(""))))}
+        "AWS": ${jsonencode(compact(concat(aws_iam_role.pipeline.*.arn, aws_iam_role.codebuild.*.arn,aws_iam_role.cloudformation.*.arn, local.codecommit_role_arn, list(""))))}
       },
       "Action": [
         "kms:Encrypt",
