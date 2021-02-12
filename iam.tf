@@ -556,12 +556,12 @@ resource "aws_iam_role_policy" "AWSCodeCommitRoleCrossAccount_policy" {
         "Effect": "Allow",
         "Action": [
              "s3:ListBucket",
-            "s3:GetBucketLocation",
+            "s3:GetBucketLocation"
         ],
         "Resource": [
             "arn:aws:s3:::${var.cross_account_s3_bucket_name}"
         ]
-    },,
+    },
     {
         "Effect": "Allow",
         "Action": [
