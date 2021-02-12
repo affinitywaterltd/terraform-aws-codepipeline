@@ -94,9 +94,7 @@ data "aws_iam_policy_document" "codebuild_policy" {
 
     resources = [
       "arn:aws:s3:::${local.bucketname}",
-      "arn:aws:s3:::${local.bucketname}/*",
-      "arn:aws:s3:::codepipeline-${data.aws_region.current.name}-${data.aws_caller_identity.current.account_id}/*",
-      "arn:aws:s3:::codepipeline-${data.aws_region.current.name}-${data.aws_caller_identity.current.account_id}",
+      "arn:aws:s3:::${local.bucketname}/*"
     ]
   }
 
@@ -500,7 +498,7 @@ resource "aws_iam_role_policy_attachment" "cloudformation_policy" {
 ####### CrossAccount ########
 #############################
 resource "aws_iam_role" "AWSCodeCommitRoleCrossAccount" {
-  count = var.enable_cross_account_role ? 1 : 0
+  count = lookup(var.cross_account_config, "enabled") ? 1 : 0
   name = "AWSCodeCommitCrossAccountRole-${data.aws_region.current.name}-${var.name}"
   assume_role_policy = <<EOF
 {
@@ -521,7 +519,7 @@ EOF
 }
 
 resource "aws_iam_role_policy" "AWSCodeCommitRoleCrossAccount_policy" {
-  count = var.enable_cross_account_role ? 1 : 0
+  count = lookup(var.cross_account_config, "enabled") ? 1 : 0
 
   name = "AWSCodeCommitRoleCrossAccount-${data.aws_region.current.name}-${var.name}-policy"
   role = aws_iam_role.AWSCodeCommitRoleCrossAccount.0.name

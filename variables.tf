@@ -21,6 +21,14 @@ locals {
   codecommit_repo_arn = var.create_codecommit && var.codecommit_repo_name == "" ? aws_codecommit_repository.this.0.arn : var.codecommit_repo_name
 }
 
+variable "cross_account_config" {
+  description = "cross account configurations"
+  type        = map(any)
+  default     = {
+    enabled = false
+  }
+}
+
 variable "cloudformation_iam_role"{
   description = "Determine ARN of the Role used for Cloudformation Deployments"
   type = string
