@@ -26,7 +26,6 @@ data "aws_iam_policy_document" "artifacts_policy" {
       "arn:aws:s3:::${local.bucketname}"
     ]
   },
-  {
     principals {
       type        = "AWS"
       identifiers = var.codecommit_role_arn == "" ? compact(list(local.codepipeline_role_arn, "")) : compact(list(local.codepipeline_role_arn, local.codecommit_role_arn, ""))
