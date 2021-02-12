@@ -25,7 +25,8 @@ data "aws_iam_policy_document" "artifacts_policy" {
     resources = [
       "arn:aws:s3:::${local.bucketname}"
     ]
-  },
+  }
+  
   statement {
     principals {
       type        = "AWS"
