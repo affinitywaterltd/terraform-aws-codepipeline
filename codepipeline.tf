@@ -21,7 +21,7 @@ resource "aws_codepipeline" "this" {
       type     = lookup(artifact_store.value, "type", "S3")
 
       encryption_key {
-        id   = var.artifact_store_encryption_key_id == "" ? aws_kms_key.kms_pipeline_key.0.arn : var.artifact_store_encryption_key_id
+        id   = lookup(artifact_store.value, "kms_id", "S3")
         type = var.artifact_store_encryption_type
       }
     }
