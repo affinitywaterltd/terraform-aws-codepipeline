@@ -92,10 +92,11 @@ data "aws_iam_policy_document" "codebuild_policy" {
       "s3:GetBucketLocation"
     ]
 
-    resources = [
+    resources = compact([
       "arn:aws:s3:::${local.bucketname}",
-      "arn:aws:s3:::${local.bucketname}/*"
-    ]
+      "arn:aws:s3:::${local.bucketname}/*",
+      jsonencode(lookup(keys(var.regional_artifacts_store), "location", null))
+    ])
   }
 
   statement {
