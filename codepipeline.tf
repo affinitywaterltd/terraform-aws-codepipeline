@@ -4,6 +4,7 @@ resource "aws_codepipeline" "this" {
   artifact_store {
     location = var.artifact_store_location == "" ? module.artifacts[0].id : var.artifact_store_location
     type     = var.artifact_store_type
+    region   = data.aws_region.current.name
 
     encryption_key {
       id   = var.artifact_store_encryption_key_id == "" ? aws_kms_key.kms_pipeline_key.0.arn : var.artifact_store_encryption_key_id
