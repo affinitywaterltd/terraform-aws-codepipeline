@@ -11,6 +11,21 @@ resource "aws_codepipeline" "this" {
     }
   }
 
+  dymanic "artifact_store" {
+    for_each = length(keys(var.regional_artifacts_store)) == 0 ? {} : var.regional_artifacts_store
+
+    content {
+      region   = artifact_store.key
+      location = lookup(artifact_store.value, "location", null)
+      type     = lookup(artifact_store.value, "type", "S3")
+
+      encryption_key {
+        id   = var.artifact_store_encryption_key_id == "" ? aws_kms_key.kms_pipeline_key.0.arn : var.artifact_store_encryption_key_id
+        type = var.artifact_store_encryption_type
+      }
+    }
+  }
+
   name     = var.name
   role_arn = local.codepipeline_role_arn
 
