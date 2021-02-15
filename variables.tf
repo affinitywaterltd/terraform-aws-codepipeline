@@ -8,7 +8,7 @@ data "aws_iam_role" "existing" {
 data "aws_region" "current" {}
 
 locals {
-  bucket     = "aw-codepipeline-artifacts-${data.aws_region.current.name}-${data.aws_caller_identity.current.account_id}-${var.name}"
+  bucket     = substr("aw-artifacts-${data.aws_region.current.name}-${data.aws_caller_identity.current.account_id}-${var.name}", 0, 63)
   bucketname = var.bucketname == "" ? local.bucket : var.bucketname
 }
 
