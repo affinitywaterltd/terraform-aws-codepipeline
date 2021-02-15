@@ -29,6 +29,19 @@ variable "cross_account_config" {
   }
 }
 
+variable "regional_artifacts_store"{
+  description = "Provide the configuration for a multi-region pipeline"
+  type = any
+  default = {}
+}
+
+variable "deployment_region"{
+  description = "Provide the configuration for a multi-region pipeline"
+  type = string
+  default = ""
+}
+
+
 variable "cloudformation_iam_role"{
   description = "Determine ARN of the Role used for Cloudformation Deployments"
   type = string

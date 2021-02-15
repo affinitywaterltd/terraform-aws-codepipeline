@@ -157,7 +157,7 @@ locals {
           version          = "1"
           input_artifacts  = ["BuildArtifact"]
           output_artifacts = []
-          region           = "${var.cloudformation_region == "" ? data.aws_region.current.name : var.cloudformation_region}"
+          region           = "${var.deployment_region == "" ? data.aws_region.current.name : var.deployment_region}"
           configuration = {
             ActionMode    = "CHANGE_SET_REPLACE"
             Capabilities  = "CAPABILITY_IAM"
@@ -178,7 +178,7 @@ locals {
           version          = "1"
           input_artifacts  = ["BuildArtifact"]
           output_artifacts = []
-          region           = "${var.cloudformation_region == "" ? data.aws_region.current.name : var.cloudformation_region}"
+          region           = "${var.deployment_region == "" ? data.aws_region.current.name : var.deployment_region}"
           configuration = {
             ActionMode    = "CHANGE_SET_EXECUTE"
             Capabilities  = "CAPABILITY_IAM"
@@ -233,7 +233,7 @@ locals {
           version          = "1"
           input_artifacts  = ["BuildArtifact"]
           output_artifacts = []
-          region           = "${var.cloudformation_region == "" ? data.aws_region.current.name : var.cloudformation_region}"
+          region           = "${var.deployment_region == "" ? data.aws_region.current.name : var.deployment_region}"
           configuration = {
             ActionMode    = "CHANGE_SET_REPLACE"
             Capabilities  = "CAPABILITY_IAM"
@@ -267,7 +267,7 @@ locals {
           version          = "1"
           input_artifacts  = ["BuildArtifact"]
           output_artifacts = []
-          region           = "${var.cloudformation_region == "" ? data.aws_region.current.name : var.cloudformation_region}"
+          region           = "${var.deployment_region == "" ? data.aws_region.current.name : var.deployment_region}"
           configuration = {
             ActionMode    = "CHANGE_SET_EXECUTE"
             Capabilities  = "CAPABILITY_IAM"
