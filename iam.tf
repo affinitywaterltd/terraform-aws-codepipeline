@@ -92,7 +92,7 @@ data "aws_iam_policy_document" "codebuild_policy" {
       "s3:GetBucketLocation"
     ]
 
-    resources = ([
+    resources = [
       "arn:aws:s3:::${local.bucketname}",
       "arn:aws:s3:::${local.bucketname}/*"
     ]
