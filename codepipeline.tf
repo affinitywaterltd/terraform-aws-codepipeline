@@ -11,7 +11,7 @@ resource "aws_codepipeline" "this" {
     }
   }
 
-  dymanic "artifact_store" {
+  dynamic "artifact_store" {
     for_each = length(keys(var.regional_artifacts_store)) == 0 ? {} : var.regional_artifacts_store
 
     content {
