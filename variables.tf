@@ -8,7 +8,7 @@ data "aws_iam_role" "existing" {
 data "aws_region" "current" {}
 
 locals {
-  bucket     = "${var.name}-${data.aws_caller_identity.current.account_id}-artifacts"
+  bucket     = "aw-codepipeline-artifacts-${data.aws_region.current.name}-${data.aws_caller_identity.current.account_id}-${var.name}"
   bucketname = var.bucketname == "" ? local.bucket : var.bucketname
 }
 
@@ -34,13 +34,6 @@ variable "cloudformation_iam_role"{
   type = string
   default = ""
 }
-
-variable "cloudformation_region"{
-  description = "Set the region to deploy Cloudformation resources"
-  type = string
-  default = ""
-}
-
 
 variable "default_logging_bucket"{
   description = "Default S3 bucket logging location"
