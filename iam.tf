@@ -164,6 +164,32 @@ data "aws_iam_policy_document" "codebuild_policy" {
   }
 }
 
+resource "aws_iam_role_policy" "codebuild_cross_region_policy" {
+  count = var.deployment_region != "" ? 1 : 0
+
+  name  = "codebuild-cross-region-policy-${var.name}"
+  role  = aws_iam_role.codebuild.0.id
+
+  policy = data.aws_iam_policy_document.codebuild_cross_region_policy.json
+}
+
+data "aws_iam_policy_document" "codebuild_cross_region_policy" {
+  statement {
+    actions = [
+      "s3:GetObject",
+      "s3:List*",
+      "s3:PutObject",
+      "s3:GetBucketAcl",
+      "s3:GetBucketLocation"
+    ]
+
+    resources = list(
+      try("arn:aws:s3:::${lookup(lookup(var.regional_artifacts_store, var.deployment_region, null), "location", null), ""}")
+      try("arn:aws:s3:::${lookup(lookup(var.regional_artifacts_store, var.deployment_region, null), "location", null), ""}/*")
+    )
+  }
+}
+
 
 #############################
 ######## CodeCommit #########

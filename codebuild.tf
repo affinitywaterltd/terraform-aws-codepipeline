@@ -23,8 +23,13 @@ resource "aws_codebuild_project" "this" {
     privileged_mode = var.environment["privileged_mode"]
 
     environment_variable {
-      name = "ARTIFACT_S3_BUCKET"
+      name = "S3_BUCKET"
       value = try(lookup(var.cross_account_config, "s3_bucket_name"), local.bucketname)
+    }
+
+    environment_variable {
+      name = "DEPLOYMENT_REGION"
+      value = var.deployment_region == "" ? data.aws_region.current.name : var.deployment_region
     }
   }
 
