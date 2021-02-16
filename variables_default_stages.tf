@@ -9,6 +9,7 @@ locals {
           owner    = "AWS"
           provider = "CodeCommit"
           version  = "1"
+          role_arn = try(lookup(var.cross_account_config, "codecommit_role_arn"), "") == "" ? null : lookup(var.cross_account_config, "codecommit_role_arn")
           configuration = {
             BranchName           = var.defaultbranch
             PollForSourceChanges = "false"
@@ -41,6 +42,7 @@ locals {
           owner            = "AWS"
           provider         = "ECS"
           version          = "1"
+          region           = var.deployment_region == "" ? data.aws_region.current.name : var.deployment_region
           input_artifacts  = ["BuildArtifact"]
           output_artifacts = []
           configuration = {
@@ -59,6 +61,7 @@ locals {
           owner    = "AWS"
           provider = "CodeCommit"
           version  = "1"
+          role_arn = try(lookup(var.cross_account_config, "codecommit_role_arn"), "") == "" ? null : lookup(var.cross_account_config, "codecommit_role_arn")
           configuration = {
             BranchName           = var.defaultbranch
             PollForSourceChanges = "false"
@@ -93,6 +96,7 @@ locals {
           version   = "1"
           input_artifacts  = []
           output_artifacts = []
+          region           = data.aws_region.current.name
           configuration    = null
         }
       },
@@ -104,6 +108,7 @@ locals {
           owner            = "AWS"
           provider         = "ECS"
           version          = "1"
+          region           = var.deployment_region == "" ? data.aws_region.current.name : var.deployment_region
           input_artifacts  = ["BuildArtifact"]
           output_artifacts = []
           configuration = {
@@ -157,7 +162,7 @@ locals {
           version          = "1"
           input_artifacts  = ["BuildArtifact"]
           output_artifacts = []
-          region           = "${var.deployment_region == "" ? data.aws_region.current.name : var.deployment_region}"
+          region           = var.deployment_region == "" ? data.aws_region.current.name : var.deployment_region
           configuration = {
             ActionMode    = "CHANGE_SET_REPLACE"
             Capabilities  = "CAPABILITY_IAM"
@@ -178,7 +183,7 @@ locals {
           version          = "1"
           input_artifacts  = ["BuildArtifact"]
           output_artifacts = []
-          region           = "${var.deployment_region == "" ? data.aws_region.current.name : var.deployment_region}"
+          region           = var.deployment_region == "" ? data.aws_region.current.name : var.deployment_region
           configuration = {
             ActionMode    = "CHANGE_SET_EXECUTE"
             Capabilities  = "CAPABILITY_IAM"
@@ -199,6 +204,7 @@ locals {
           owner    = "AWS"
           provider = "CodeCommit"
           version  = "1"
+          role_arn = try(lookup(var.cross_account_config, "codecommit_role_arn"), "") == "" ? null : lookup(var.cross_account_config, "codecommit_role_arn")
           configuration = {
             BranchName           = var.defaultbranch
             PollForSourceChanges = "false"
@@ -233,7 +239,7 @@ locals {
           version          = "1"
           input_artifacts  = ["BuildArtifact"]
           output_artifacts = []
-          region           = "${var.deployment_region == "" ? data.aws_region.current.name : var.deployment_region}"
+          region           = var.deployment_region == "" ? data.aws_region.current.name : var.deployment_region
           configuration = {
             ActionMode    = "CHANGE_SET_REPLACE"
             Capabilities  = "CAPABILITY_IAM"
@@ -268,7 +274,7 @@ locals {
           version          = "1"
           input_artifacts  = ["BuildArtifact"]
           output_artifacts = []
-          region           = "${var.deployment_region == "" ? data.aws_region.current.name : var.deployment_region}"
+          region           = var.deployment_region == "" ? data.aws_region.current.name : var.deployment_region
           configuration = {
             ActionMode    = "CHANGE_SET_EXECUTE"
             Capabilities  = "CAPABILITY_IAM"
@@ -282,94 +288,3 @@ locals {
     ]
   }
 }
-
-
-
-
-/*
-"CODECOMMIT_CODEBUILD_CLOUDFORMATION" = [
-      {
-        name = "Source"
-        action = {
-          name     = "Source"
-          category = "Source"
-          owner    = "AWS"
-          provider = "CodeCommit"
-          version  = "1"
-          configuration = {
-            BranchName           = var.defaultbranch
-            PollForSourceChanges = "false"
-            RepositoryName       = var.name
-          }
-          input_artifacts  = []
-          output_artifacts = ["SourceArtifact"]
-        }
-      },
-      {
-        name = "Build"
-        action = {
-          name             = "Build"
-          category         = "Build"
-          owner            = "AWS"
-          provider         = "CodeBuild"
-          input_artifacts  = ["SourceArtifact"]
-          output_artifacts = ["BuildArtifact"]
-          version          = "1"
-          configuration = {
-            ProjectName = element(concat(aws_codebuild_project.this.*.id, list("")), 0)
-          }
-        }
-      },
-      {
-        name = "Deploy"
-        action = {
-          name             = "Deploy"
-          category         = "Deploy"
-          owner            = "AWS"
-          provider         = "CloudFormation"
-          version          = "1"
-          input_artifacts  = ["BuildArtifact"]
-          output_artifacts = []
-          configuration = {
-            ActionMode    = "CHANGE_SET_REPLACE"
-            Capabilities  = "CAPABILITY_IAM"
-            StackName     = "${var.name}-cloudformation-stack"
-            TemplatePath  = "build::buildspec.yml"
-            ChangeSetName = "${var.name}-cloudformation-changeset"
-            RoleArn       = var.cloudformation_iam_role == null ? var.cloudformation_iam_role : var.cloudformation_iam_role
-          }
-        }
-      },
-      {
-        Name = "Approval"
-        action = {
-          name      = "ReviewChangeSets"
-          category  = "Approval"
-          owner     = "AWS"
-          provider  = "Manual"
-          version   = "1"
-        }
-      },
-      {
-        name = "Deploy"
-        action = {
-          name             = "Deploy"
-          category         = "Deploy"
-          owner            = "AWS"
-          provider         = "CloudFormation"
-          version          = "1"
-          input_artifacts  = ["BuildArtifact"]
-          output_artifacts = []
-          configuration = {
-            ActionMode    = "CHANGE_SET_REPLACE"
-            Capabilities  = "CAPABILITY_IAM"
-            StackName     = "${var.name}-cloudformation-stack"
-            TemplatePath  = "build::buildspec.yml"
-            ChangeSetName = "${var.name}-cloudformation-changeset"
-            RoleArn       = var.cloudformation_iam_role == null ? var.cloudformation_iam_role : var.cloudformation_iam_role
-          }
-        }
-      },
-    ]
-
-*/
