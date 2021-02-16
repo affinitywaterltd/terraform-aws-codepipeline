@@ -44,7 +44,7 @@ variable "codebuild_environment_variables"{
 variable "cloudformation_template_name"{
   description = "Provide the template filename configuration to CloudFormation"
   type = string
-  default = "cfn-tempalte.yml"
+  default = "cfn-template.yml"
 }
 
 variable "cloudformation_capabilities"{
