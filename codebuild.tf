@@ -34,7 +34,7 @@ resource "aws_codebuild_project" "this" {
 
     environment_variable {
       name = "TEMPLATE_NAME"
-      value = cloudformation_template_name
+      value = var.cloudformation_template_name
     }
 
     dynamic "environment_variable" {
