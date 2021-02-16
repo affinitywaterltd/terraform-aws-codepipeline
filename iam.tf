@@ -184,8 +184,8 @@ data "aws_iam_policy_document" "codebuild_cross_region_policy" {
     ]
 
     resources = list(
-      try("arn:aws:s3:::${lookup(lookup(var.regional_artifacts_store, var.deployment_region, null), "location", null), ""}")
-      try("arn:aws:s3:::${lookup(lookup(var.regional_artifacts_store, var.deployment_region, null), "location", null), ""}/*")
+      try("arn:aws:s3:::${lookup(lookup(var.regional_artifacts_store, var.deployment_region, null), "location", null)}", ""),
+      try("arn:aws:s3:::${lookup(lookup(var.regional_artifacts_store, var.deployment_region, null), "location", null)}/*", "")
     )
   }
 }

@@ -30,7 +30,7 @@ data "aws_iam_policy_document" "artifacts_policy" {
   statement {
     principals {
       type        = "AWS"
-      identifiers = try(lookup(var.cross_account_config, "codecommit_role_arn"), "") == "" ? compact(list(local.codepipeline_role_arn, "")) : compact(list(local.codepipeline_role_arn, local.codecommit_role_arn,local.cloudformation_role_arn ""))
+      identifiers = try(lookup(var.cross_account_config, "codecommit_role_arn"), "") == "" ? compact(list(local.codepipeline_role_arn, "")) : compact(list(local.codepipeline_role_arn, local.codecommit_role_arn, local.cloudformation_role_arn, ""))
     }
 
     actions = [
