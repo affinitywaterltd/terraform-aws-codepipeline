@@ -24,7 +24,7 @@ resource "aws_codebuild_project" "this" {
 
     environment_variable {
       name = "S3_BUCKET"
-      value = try(lookup(var.cross_account_config, "s3_bucket_name"), local.bucketname)
+      value = try(lookup(lookup(var.regional_artifacts_store, var.deployment_region, null), "location", null), local.bucketname)
     }
 
     environment_variable {
