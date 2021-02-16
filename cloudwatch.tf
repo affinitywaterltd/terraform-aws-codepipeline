@@ -1,5 +1,5 @@
 resource "aws_cloudwatch_event_rule" "codechange" {
-  count       = var.reponame == "" ? 0 : 1
+  count       = var.create_codecommit ? 1 : 0
   name        = "codecommit-${var.name}"
   description = "Capture source code change events to trigger build"
 
@@ -29,8 +29,8 @@ PATTERN
 }
 
 resource "aws_cloudwatch_event_target" "triggerbuild" {
-  count    = var.reponame == "" ? 0 : 1
+  count    = var.create_codecommit ? 1 : 0
   rule     = aws_cloudwatch_event_rule.codechange.0.name
-  arn      = aws_codebuild_project.this[0].arn
+  arn      = aws_codepipeline.this[0].arn
   role_arn = aws_iam_role.trigger.0.arn
 }

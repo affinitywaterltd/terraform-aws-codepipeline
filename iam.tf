@@ -2,9 +2,9 @@
 ########## Trigger ##########
 #############################
 resource "aws_iam_role" "trigger" {
-  count = var.reponame == "" ? 0 : 1
+  count = var.create_codecommit ? 1 : 0
   path  = "/service-role/"
-  name  = "eventtrigger-${var.reponame}"
+  name  = "comdecommit-trigger-${var.reponame}"
 
   assume_role_policy = <<PATTERN
 {
@@ -25,7 +25,7 @@ PATTERN
 }
 
 resource "aws_iam_policy" "trigger" {
-  count = var.reponame == "" ? 0 : 1
+  count = var.create_codecommit ? 1 : 0
 
   policy = <<EOF
 {
@@ -34,8 +34,8 @@ resource "aws_iam_policy" "trigger" {
         {
             "Sid": "VisualEditor0",
             "Effect": "Allow",
-            "Action": "codebuild:StartBuild",
-            "Resource": "${aws_codebuild_project.this[0].arn}"
+            "Action": "codepipeline:StartPipelineExecution",
+            "Resource": "${aws_codepipeline.this[0].arn}"
         }
     ]
 }
@@ -43,7 +43,7 @@ EOF
 }
 
 resource "aws_iam_role_policy_attachment" "attachtotriggerrole" {
-  count      = var.reponame == "" ? 0 : 1
+  count      = var.create_codecommit ? 1 : 0
   role       = aws_iam_role.trigger.0.name
   policy_arn = aws_iam_policy.trigger.0.arn
 }
