@@ -165,9 +165,9 @@ locals {
           region           = var.deployment_region == "" ? data.aws_region.current.name : var.deployment_region
           configuration = {
             ActionMode    = "CHANGE_SET_REPLACE"
-            Capabilities  = ["CAPABILITY_IAM"]
+            Capabilities  = var.cloudformation_capabilities
             StackName     = "${var.name}-cloudformation-stack"
-            TemplatePath  = "BuildArtifact::cfn-template.yml"
+            TemplatePath  = "BuildArtifact::${var.cloudformation_template_name}"
             ChangeSetName = "${var.name}-cloudformation-changeset"
             RoleArn       = local.cloudformation_role_arn
           }
@@ -186,9 +186,9 @@ locals {
           region           = var.deployment_region == "" ? data.aws_region.current.name : var.deployment_region
           configuration = {
             ActionMode    = "CHANGE_SET_EXECUTE"
-            Capabilities  = "CAPABILITY_IAM"
+            Capabilities  = var.cloudformation_capabilities
             StackName     = "${var.name}-cloudformation-stack"
-            TemplatePath  = "BuildArtifact::cfn-template.yml"
+            TemplatePath  = "BuildArtifact::${var.cloudformation_template_name}"
             ChangeSetName = "${var.name}-cloudformation-changeset"
             RoleArn       = local.cloudformation_role_arn
           }
@@ -242,9 +242,9 @@ locals {
           region           = var.deployment_region == "" ? data.aws_region.current.name : var.deployment_region
           configuration = {
             ActionMode    = "CHANGE_SET_REPLACE"
-            Capabilities  = "CAPABILITY_IAM"
+            Capabilities  = var.cloudformation_capabilities
             StackName     = "${var.name}-cloudformation-stack"
-            TemplatePath  = "BuildArtifact::cfn-template.yml"
+            TemplatePath  = "BuildArtifact::${var.cloudformation_template_name}"
             ChangeSetName = "${var.name}-cloudformation-changeset"
             RoleArn       = local.cloudformation_role_arn
           }
@@ -277,9 +277,9 @@ locals {
           region           = var.deployment_region == "" ? data.aws_region.current.name : var.deployment_region
           configuration = {
             ActionMode    = "CHANGE_SET_EXECUTE"
-            Capabilities  = "CAPABILITY_IAM"
+            Capabilities  = var.cloudformation_capabilities
             StackName     = "${var.name}-cloudformation-stack"
-            TemplatePath  = "BuildArtifact::cfn-template.yml"
+            TemplatePath  = "BuildArtifact::${var.cloudformation_template_name}"
             ChangeSetName = "${var.name}-cloudformation-changeset"
             RoleArn       = local.cloudformation_role_arn
           }

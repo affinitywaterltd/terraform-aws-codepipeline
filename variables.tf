@@ -35,6 +35,24 @@ variable "regional_artifacts_store"{
   default = {}
 }
 
+variable "codebuild_environment_variables"{
+  description = "Provide Environemtn variables to CodeBuild"
+  type = any
+  default = {}
+}
+
+variable "cloudformation_template_name"{
+  description = "Provide the template filename configuration to CloudFormation"
+  type = string
+  default = "cfn-tempalte.yml"
+}
+
+variable "cloudformation_capabilities"{
+  description = "Provide the Cabailities configuration to CloudFormation"
+  type = string
+  default = ""
+}
+
 variable "deployment_region"{
   description = "Provide the configuration for a multi-region pipeline"
   type = string

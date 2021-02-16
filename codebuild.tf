@@ -31,6 +31,20 @@ resource "aws_codebuild_project" "this" {
       name = "DEPLOYMENT_REGION"
       value = var.deployment_region == "" ? data.aws_region.current.name : var.deployment_region
     }
+
+    environment_variable {
+      name = "TEMPLATE_NAME"
+      value = cloudformation_template_name
+    }
+
+    dynamic "environment_variable" {
+      for_each = length(keys(var.codebuild_environment_variables)) == 0 ? {} : var.codebuild_environment_variables
+
+      content {
+        name     = lookup(environment_variable.value, "name", null)
+        value    = lookup(environment_variable.value, "value", null)
+      }
+    }
   }
 
   source {
