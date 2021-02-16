@@ -254,7 +254,7 @@ locals {
           version   = "1"
           input_artifacts  = []
           output_artifacts = []
-          region           = "${var.deployment_region == "" ? data.aws_region.current.name : var.deployment_region}"
+          region           = data.aws_region.current.name
           configuration    = null
         }
       },
