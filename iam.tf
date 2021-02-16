@@ -4,7 +4,7 @@
 resource "aws_iam_role" "trigger" {
   count = var.create_codecommit ? 1 : 0
   path  = "/service-role/"
-  name  = "comdecommit-trigger-${var.reponame}"
+  name  = "comdecommit-trigger-${var.name}"
 
   assume_role_policy = <<PATTERN
 {
@@ -54,7 +54,7 @@ resource "aws_iam_role_policy_attachment" "attachtotriggerrole" {
 resource "aws_iam_role" "codebuild" {
   count = var.role == "" && (var.create_codebuild || contains(split("_", var.preconfigured_stage_config), "CODEBUILD")) ? 1 : 0
 
-  name  = "AWSCodeBuildRole-${var.name}"
+  name  = "codebuild-${var.name}"
   assume_role_policy = <<HERE
 {
     "Version": "2012-10-17",
@@ -76,7 +76,7 @@ HERE
 resource "aws_iam_role_policy" "codebuild_policy" {
   count = var.role == "" && (var.create_codebuild|| contains(split("_", var.preconfigured_stage_config), "CODEBUILD")) ? 1 : 0
 
-  name  = "codebuildpolicy-${var.name}"
+  name  = "codebuild-policy-${var.name}"
   role  = aws_iam_role.codebuild.0.id
 
   policy = data.aws_iam_policy_document.codebuild_policy.json
@@ -197,7 +197,7 @@ data "aws_iam_policy_document" "codebuild_cross_region_policy" {
 resource "aws_iam_role_policy" "codecommit_policy" {
   count = var.reponame == "" ? 0 : 1
 
-  name  = "codecommitpolicy-${var.name}"
+  name  = "codecommit-policy-${var.name}"
   role  = aws_iam_role.codebuild[count.index].id
 
   policy = <<JSON
@@ -248,7 +248,7 @@ JSON
 #############################
 resource "aws_iam_role" "codedeploy" {
   count = var.role == "" && (var.create_codedeploy|| contains(split("_", var.preconfigured_stage_config), "CODEDEPLOY")) ? 1 : 0
-  name = "AWSCodeDeployRole-${data.aws_region.current.name}-${var.name}"
+  name = "codedeploy-${data.aws_region.current.name}-${var.name}"
 
   assume_role_policy = <<EOF
 {
@@ -279,7 +279,7 @@ resource "aws_iam_role_policy_attachment" "AWSCodeDeployRole" {
 #############################
 resource "aws_iam_role" "pipeline" {
   count = var.codepipeline_iam_role == "" && var.create_codepipeline ? 1 : 0
-  name  = "AWSCodePipelineServiceRole-${data.aws_region.current.name}-${var.name}"
+  name  = "codepipeline-${data.aws_region.current.name}-${var.name}"
   path  = "/service-role/"
 
   assume_role_policy = <<POLICY
@@ -327,7 +327,7 @@ JSON
 
 resource "aws_iam_role_policy" "inline_policy" {
   count = var.codepipeline_iam_role == "" && var.create_codepipeline ? 1 : 0
-  name  = "AWSCodePipeline-${data.aws_region.current.name}-${var.name}"
+  name  = "codepipleine-policy-${var.name}"
   role  = aws_iam_role.pipeline.0.name
 
   policy = data.aws_iam_policy_document.pipeline.json
@@ -443,14 +443,12 @@ data "aws_iam_policy_document" "pipeline" {
   }
 }
 
-
-
 #############################
 ###### CloudFormation #######
 #############################
 resource "aws_iam_role" "cloudformation" {
   count = var.cloudformation_role_arn == "" && (var.create_codepipeline || contains(split("_", var.preconfigured_stage_config), "CLOUDFORMATION")) ? 1 : 0
-  name  = "AWSCloudFormationRole-${data.aws_region.current.name}-${var.name}"
+  name  = "cloudformation-${data.aws_region.current.name}-${var.name}"
   path  = "/service-role/"
 
   assume_role_policy = <<POLICY
@@ -476,7 +474,7 @@ POLICY
 resource "aws_iam_role_policy" "cloudformation_changeset_policy" {
   count = var.cloudformation_role_arn == "" && (var.create_codepipeline || contains(split("_", var.preconfigured_stage_config), "CLOUDFORMATION")) ? 1 : 0
 
-  name  = "cloudformationpolicy-${var.name}"
+  name  = "cloudformation-policy-${var.name}"
   role  = aws_iam_role.cloudformation[0].name
 
   policy = <<JSON
@@ -525,7 +523,7 @@ resource "aws_iam_role_policy_attachment" "cloudformation_policy" {
 #############################
 resource "aws_iam_role" "AWSCodeCommitRoleCrossAccount" {
   count = try(lookup(var.cross_account_config, "enabled"), false) ? 1 : 0
-  name = "AWSCodeCommitCrossAccountRole-${data.aws_region.current.name}-${var.name}"
+  name = "codecommit-crossaccount-${data.aws_region.current.name}-${var.name}"
   assume_role_policy = <<EOF
 {
   "Version": "2012-10-17",
@@ -547,7 +545,7 @@ EOF
 resource "aws_iam_role_policy" "AWSCodeCommitRoleCrossAccount_policy" {
   count = try(lookup(var.cross_account_config, "enabled"), false) ? 1 : 0
 
-  name = "AWSCodeCommitRoleCrossAccount-${data.aws_region.current.name}-${var.name}-policy"
+  name = "codecommit-crossaccount-policy-${data.aws_region.current.name}-${var.name}"
   role = aws_iam_role.AWSCodeCommitRoleCrossAccount.0.name
 
   policy = <<EOF
