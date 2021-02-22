@@ -299,7 +299,7 @@ locals {
           configuration = {
             BranchName           = var.defaultbranch
             PollForSourceChanges = "false"
-            RepositoryName       = var.name
+            RepositoryName       = local.codecommit_repo_arn
           }
           input_artifacts  = []
           output_artifacts = ["SourceArtifact"]
@@ -352,7 +352,7 @@ locals {
           configuration = {
             BranchName           = var.defaultbranch
             PollForSourceChanges = "false"
-            RepositoryName       = var.name
+            RepositoryName       = local.codecommit_repo_arn
           }
           input_artifacts  = []
           output_artifacts = ["SourceArtifact"]
