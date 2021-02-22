@@ -50,7 +50,7 @@ variable "cloudformation_template_name"{
 variable "cloudformation_capabilities"{
   description = "Provide the Cabailities configuration to CloudFormation"
   type = string
-  default = ""
+  default = null
 }
 
 variable "deployment_region"{
