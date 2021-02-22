@@ -326,7 +326,7 @@ locals {
           name             = "Deploy"
           category         = "Deploy"
           owner            = "AWS"
-          provider         = "Elastic Beanstalk"
+          provider         = "ElasticBeanstalk"
           version          = "1"
           input_artifacts  = ["BuildArtifact"]
           output_artifacts = []
@@ -393,7 +393,7 @@ locals {
           name             = "Deploy"
           category         = "Deploy"
           owner            = "AWS"
-          provider         = "Elastic Beanstalk"
+          provider         = "ElasticBeanstalk"
           version          = "1"
           input_artifacts  = ["BuildArtifact"]
           output_artifacts = []
