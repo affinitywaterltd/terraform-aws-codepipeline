@@ -321,24 +321,70 @@ locals {
         }
       },
       {
-        name = "Stage"
+        name = "Deploy"
         action = {
-          name             = "Stage"
+          name             = "Deploy"
           category         = "Deploy"
           owner            = "AWS"
-          provider         = "CloudFormation"
+          provider         = "Elastic Beanstalk"
           version          = "1"
           input_artifacts  = ["BuildArtifact"]
           output_artifacts = []
           region           = var.deployment_region == "" ? data.aws_region.current.name : var.deployment_region
           configuration = {
-            ActionMode    = "CHANGE_SET_REPLACE"
-            Capabilities  = var.cloudformation_capabilities
-            StackName     = "${var.name}-cloudformation-stack"
-            TemplatePath  = "BuildArtifact::${var.cloudformation_template_name}"
-            ChangeSetName = "${var.name}-cloudformation-changeset"
-            RoleArn       = local.cloudformation_role_arn
+            ApplicationName = var.name
+            EnvironemntName = var.beanstalk_environemnt_name
           }
+        }
+      }
+    ],
+    
+    "CODECOMMIT_CODEBUILD_APPROVAL_ELASTICBEANSTALK" = [
+      {
+        name = "Source"
+        action = {
+          name     = "Source"
+          category = "Source"
+          owner    = "AWS"
+          provider = "CodeCommit"
+          version  = "1"
+          role_arn = try(lookup(var.cross_account_config, "codecommit_role_arn"), "") == "" ? null : lookup(var.cross_account_config, "codecommit_role_arn")
+          configuration = {
+            BranchName           = var.defaultbranch
+            PollForSourceChanges = "false"
+            RepositoryName       = var.name
+          }
+          input_artifacts  = []
+          output_artifacts = ["SourceArtifact"]
+        }
+      },
+      {
+        name = "Build"
+        action = {
+          name             = "Build"
+          category         = "Build"
+          owner            = "AWS"
+          provider         = "CodeBuild"
+          input_artifacts  = ["SourceArtifact"]
+          output_artifacts = ["BuildArtifact"]
+          version          = "1"
+          configuration = {
+            ProjectName = element(concat(aws_codebuild_project.this.*.id, list("")), 0)
+          }
+        }
+      },
+      {
+        name = "Approval"
+        action = {
+          name      = "Approval"
+          category  = "Approval"
+          owner     = "AWS"
+          provider  = "Manual"
+          version   = "1"
+          input_artifacts  = []
+          output_artifacts = []
+          region           = data.aws_region.current.name
+          configuration    = null
         }
       },
       {
@@ -353,15 +399,11 @@ locals {
           output_artifacts = []
           region           = var.deployment_region == "" ? data.aws_region.current.name : var.deployment_region
           configuration = {
-            ActionMode    = "CHANGE_SET_EXECUTE"
-            Capabilities  = var.cloudformation_capabilities
-            StackName     = "${var.name}-cloudformation-stack"
-            TemplatePath  = "BuildArtifact::${var.cloudformation_template_name}"
-            ChangeSetName = "${var.name}-cloudformation-changeset"
-            RoleArn       = local.cloudformation_role_arn
+            ApplicationName = var.name
+            EnvironemntName = var.beanstalk_environemnt_name
           }
         }
       }
-    ],
+    ]
   }
 }
