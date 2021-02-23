@@ -286,7 +286,7 @@ locals {
         }
       }
     ],
-    "CODECOMMIT_CODEBUILD_ELASTICBEANSTALK" = [
+    "CODECOMMIT_JENKINS_ELASTICBEANSTALK" = [
       {
         name = "Source"
         action = {
@@ -310,13 +310,13 @@ locals {
         action = {
           name             = "Build"
           category         = "Build"
-          owner            = "AWS"
-          provider         = "CodeBuild"
+          owner            = "Custom"
+          provider         = try(lookup(var.jenkins_config, "provider"), "")
           input_artifacts  = ["SourceArtifact"]
           output_artifacts = ["BuildArtifact"]
           version          = "1"
           configuration = {
-            ProjectName = element(concat(aws_codebuild_project.this.*.id, list("")), 0)
+            ProjectName = try(lookup(var.jenkins_config, "project_name"), "")
           }
         }
       },
@@ -338,8 +338,7 @@ locals {
         }
       }
     ],
-    
-    "CODECOMMIT_CODEBUILD_APPROVAL_ELASTICBEANSTALK" = [
+    "CODECOMMIT_JENKINS_APPROVAL_ELASTICBEANSTALK" = [
       {
         name = "Source"
         action = {
@@ -363,13 +362,13 @@ locals {
         action = {
           name             = "Build"
           category         = "Build"
-          owner            = "AWS"
-          provider         = "CodeBuild"
+          owner            = "Custom"
+          provider         = try(lookup(var.jenkins_config, "provider"), "")
           input_artifacts  = ["SourceArtifact"]
           output_artifacts = ["BuildArtifact"]
           version          = "1"
           configuration = {
-            ProjectName = element(concat(aws_codebuild_project.this.*.id, list("")), 0)
+            ProjectName = try(lookup(var.jenkins_config, "project_name"), "")
           }
         }
       },

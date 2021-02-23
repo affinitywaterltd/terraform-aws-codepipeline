@@ -29,6 +29,12 @@ variable "cross_account_config" {
   }
 }
 
+variable "jenkins_config" {
+  description = "Jenkins build server configurations"
+  type        = any
+  default     = {}
+}
+
 variable "regional_artifacts_store"{
   description = "Provide the configuration for a multi-region pipeline"
   type = any
