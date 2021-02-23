@@ -441,6 +441,16 @@ data "aws_iam_policy_document" "pipeline" {
 
     resources = ["*"]
   }
+
+  statement {
+    actions = [
+      "logs:CreateLogGroup",
+      "logs:CreateLogStream",
+      "logs:PutLogEvents"
+    ]
+
+    resources = ["*"]
+  }
 }
 
 #############################
