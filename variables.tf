@@ -59,13 +59,6 @@ variable "cloudformation_capabilities"{
   default = null
 }
 
-variable "beanstalk_environemnt_name"{
-  description = "Provide the Environemnt name for Beanstalk Deployment"
-  type = string
-  default = null
-}
-
-
 variable "deployment_region"{
   description = "Provide the configuration for a multi-region pipeline"
   type = string
