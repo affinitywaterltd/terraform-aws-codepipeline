@@ -65,6 +65,11 @@ variable "deployment_region"{
   default = ""
 }
 
+variable "elasticbeanstalk_environment_name"{
+  description = "Provide the configuration for the beanstalk environment name"
+  type = string
+  default = ""
+}
 
 variable "cloudformation_iam_role"{
   description = "Determine ARN of the Role used for Cloudformation Deployments"

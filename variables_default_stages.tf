@@ -333,7 +333,7 @@ locals {
           region           = var.deployment_region == "" ? data.aws_region.current.name : var.deployment_region
           configuration = {
             ApplicationName = var.name
-            EnvironmentName = var.name
+            EnvironmentName = "${var.name}-${var.elasticbeanstalk_environment_name}"
           }
         }
       }
@@ -399,7 +399,7 @@ locals {
           region           = var.deployment_region == "" ? data.aws_region.current.name : var.deployment_region
           configuration = {
             ApplicationName = var.name
-            EnvironmentName = var.name
+            EnvironmentName = "${var.name}-${var.elasticbeanstalk_environment_name}"
           }
         }
       }
