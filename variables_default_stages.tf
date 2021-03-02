@@ -332,8 +332,8 @@ locals {
           output_artifacts = []
           region           = var.deployment_region == "" ? data.aws_region.current.name : var.deployment_region
           configuration = {
-            ApplicationName = var.name
-            EnvironmentName = "${var.name}-${var.elasticbeanstalk_environment_name}"
+            ApplicationName = var.elasticbeanstalk_application_name
+            EnvironmentName = "${var.elasticbeanstalk_application_name}-${var.elasticbeanstalk_environment_name}"
           }
         }
       }
@@ -398,8 +398,8 @@ locals {
           output_artifacts = []
           region           = var.deployment_region == "" ? data.aws_region.current.name : var.deployment_region
           configuration = {
-            ApplicationName = var.name
-            EnvironmentName = "${var.name}-${var.elasticbeanstalk_environment_name}"
+            ApplicationName = var.elasticbeanstalk_application_name
+            EnvironmentName = "${var.elasticbeanstalk_application_name}-${var.elasticbeanstalk_environment_name}"
           }
         }
       }
