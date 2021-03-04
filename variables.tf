@@ -17,7 +17,9 @@ locals {
   codedeploy_role_arn = var.codedeploy_iam_role == "" ? element(concat(aws_iam_role.pipeline.*.arn, list("")), 0) : var.codedeploy_iam_role
   cloudformation_role_arn = var.cloudformation_iam_role == "" ? element(concat(aws_iam_role.cloudformation.*.arn, list("")), 0) : var.cloudformation_iam_role
   codecommit_role_arn = try(lookup(var.cross_account_config, "codecommit_role_arn"), "") == "" ? element(concat(aws_iam_role.AWSCodeCommitRoleCrossAccount.*.arn, list("")), 0) : lookup(var.cross_account_config, "codecommit_role_arn")
-  codecommit_repo_name = var.create_codecommit && try(lookup(var.cross_account_config, "codecommit_repo_name"), "") == "" ? aws_codecommit_repository.this.0.repository_id  : lookup(var.cross_account_config, "codecommit_repo_name")
+
+  repo_name = var.repo_name == "" ? var.name : var.repo_name
+  codecommit_repo_name = var.create_codecommit && try(lookup(var.cross_account_config, "codecommit_repo_name"), "") == "" ? local.repo_name  : lookup(var.cross_account_config, "codecommit_repo_name")
   codecommit_repo_arn = var.create_codecommit && try(lookup(var.cross_account_config, "codecommit_repo_name"), "") == "" ? aws_codecommit_repository.this.0.arn : lookup(var.cross_account_config, "codecommit_repo_name")
 }
 
