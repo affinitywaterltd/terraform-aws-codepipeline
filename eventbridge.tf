@@ -23,6 +23,46 @@ resource "aws_cloudwatch_event_permission" "codecommit-cross-account" {
 }
 
 
+resource "aws_cloudwatch_event_rule" "source" {
+  count       = local.is_destination ? 1 : 0
+  name        = "codecommit-${var.name}"
+  event_bus_name = "eventbridge-bus-${data.aws_region.current.name}-${var.name}"
+
+  description = "Capture source code change events to trigger build - ${var.name}"
+
+  event_pattern = <<PATTERN
+{
+    "detail": {
+        "referenceName": [
+            "${var.defaultbranch}"
+        ],
+        "referenceType": [
+            "branch"
+        ]
+    },
+    "detail-type": [
+        "CodeCommit Repository State Change"
+    ],
+    "resources": [
+        "${local.codecommit_repo_arn}"
+    ],
+    "source": [
+        "aws.codecommit"
+    ]
+}
+PATTERN
+  
+  tags = var.tags
+}
+
+resource "aws_cloudwatch_event_target" "this" {
+  count = local.is_source && try(lookup(var.eventbridge_bus_config, "eventbridge_arn"), null) != null ? 1 : 0
+
+  arn  = try(lookup(var.eventbridge_bus_config, "eventbridge_arn"), null)
+  rule = aws_cloudwatch_event_rule.source.0.id
+
+}
+
 #
 # Type: Source
 #
