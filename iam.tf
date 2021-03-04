@@ -195,7 +195,7 @@ data "aws_iam_policy_document" "codebuild_cross_region_policy" {
 ######## CodeCommit #########
 #############################
 resource "aws_iam_role_policy" "codecommit_policy" {
-  count = var.reponame == "" ? 0 : 1
+  count = var.repo_name == "" ? 0 : 1
 
   name  = "codecommit-policy-${var.name}"
   role  = aws_iam_role.codebuild[count.index].id
