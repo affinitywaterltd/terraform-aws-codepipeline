@@ -57,7 +57,7 @@ PATTERN
 }
 
 resource "aws_cloudwatch_event_target" "this" {
-  count = local.is_source && try(lookup(var.eventbridge_bus_config, "eventbridge_arn"), false) ? 1 : 0
+  count = local.is_source && try(lookup(var.eventbridge_bus_config, "eventbridge_arn"), null) != null ? 1 : 0
 
   arn  = try(lookup(var.eventbridge_bus_config, "eventbridge_arn"), null)
   rule = aws_cloudwatch_event_rule.this.0.id
