@@ -26,9 +26,14 @@ variable "cross_account_config" {
   type        = any
   default     = {
     enabled = false
-    event_bus {
-      enabled = false
-    }
+  }
+}
+
+variable "eventbridge_bus_config" {
+  description = "cross account event bus configurations"
+  type        = any
+  default     = {
+    enabled = false
   }
 }
 
