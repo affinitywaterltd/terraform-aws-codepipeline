@@ -49,7 +49,7 @@ resource "aws_codebuild_project" "this" {
 
   source {
     type      = var.sourcecode["type"]
-    location  = var.sourcecode["location"] == "" ? local.codecommit_repo_name : var.sourcecode["location"]
+    location  = var.sourcecode["location"] == "" ? local.codecommit_repo_arn : var.sourcecode["location"]
     buildspec = var.sourcecode["buildspec"]
   }
 

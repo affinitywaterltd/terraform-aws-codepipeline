@@ -19,7 +19,6 @@ locals {
   codecommit_role_arn = try(lookup(var.cross_account_config, "codecommit_role_arn"), "") == "" ? element(concat(aws_iam_role.AWSCodeCommitRoleCrossAccount.*.arn, list("")), 0) : lookup(var.cross_account_config, "codecommit_role_arn")
 
   codecommit_repo_arn = var.create_codecommit && try(lookup(var.cross_account_config, "codecommit_repo_name"), "") == "" ? aws_codecommit_repository.this.0.arn : lookup(var.cross_account_config, "codecommit_repo_name")
-  codecommit_repo_name = var.repo_name == "" ? var.name : var.repo_name
 }
 
 variable "cross_account_config" {

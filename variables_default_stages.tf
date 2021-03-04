@@ -13,7 +13,7 @@ locals {
           configuration = {
             BranchName           = var.defaultbranch
             PollForSourceChanges = "false"
-            RepositoryName       = local.codecommit_repo_name
+            RepositoryName       = local.codecommit_repo_arn
           }
           input_artifacts  = []
           output_artifacts = ["SourceArtifact"]
@@ -65,7 +65,7 @@ locals {
           configuration = {
             BranchName           = var.defaultbranch
             PollForSourceChanges = "false"
-            RepositoryName       = local.codecommit_repo_name
+            RepositoryName       = local.codecommit_repo_arn
           }
           input_artifacts  = []
           output_artifacts = ["SourceArtifact"]
@@ -131,7 +131,7 @@ locals {
           configuration = {
             BranchName           = var.defaultbranch
             PollForSourceChanges = "false"
-            RepositoryName       = local.codecommit_repo_name
+            RepositoryName       = local.codecommit_repo_arn
           }
           input_artifacts  = []
           output_artifacts = ["SourceArtifact"]
@@ -208,7 +208,7 @@ locals {
           configuration = {
             BranchName           = var.defaultbranch
             PollForSourceChanges = "false"
-            RepositoryName       = local.codecommit_repo_name
+            RepositoryName       = local.codecommit_repo_arn
           }
           input_artifacts  = []
           output_artifacts = ["SourceArtifact"]
@@ -299,7 +299,7 @@ locals {
           configuration = {
             BranchName           = var.defaultbranch
             PollForSourceChanges = "false"
-            RepositoryName       = local.codecommit_repo_name
+            RepositoryName       = local.codecommit_repo_arn
           }
           input_artifacts  = []
           output_artifacts = ["SourceArtifact"]
@@ -351,7 +351,7 @@ locals {
           configuration = {
             BranchName           = var.defaultbranch
             PollForSourceChanges = "false"
-            RepositoryName       = local.codecommit_repo_name
+            RepositoryName       = local.codecommit_repo_arn
           }
           input_artifacts  = []
           output_artifacts = ["SourceArtifact"]
