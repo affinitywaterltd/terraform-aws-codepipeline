@@ -29,6 +29,8 @@ resource "aws_cloudwatch_event_permission" "codecommit-cross-account" {
 resource "aws_cloudwatch_event_rule" "this" {
   count       = local.is_source ? 1 : 0
   name        = "codecommit-${var.name}"
+  event_bus_name = "eventbridge-bus-${data.aws_region.current.name}-${var.name}"
+
   description = "Capture source code change events to trigger build - ${var.name}"
 
   event_pattern = <<PATTERN
