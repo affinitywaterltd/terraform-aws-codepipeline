@@ -23,7 +23,7 @@ resource "aws_cloudwatch_event_permission" "codecommit-cross-account" {
 }
 
 
-resource "aws_cloudwatch_event_rule" "source" {
+resource "aws_cloudwatch_event_rule" "this_destination" {
   count       = local.is_destination ? 1 : 0
   name        = "codecommit-${var.name}"
   event_bus_name = "eventbridge-bus-${data.aws_region.current.name}-${var.name}"
@@ -55,18 +55,18 @@ PATTERN
   tags = var.tags
 }
 
-resource "aws_cloudwatch_event_target" "this" {
+resource "aws_cloudwatch_event_target" "this_destination" {
   count = local.is_source && try(lookup(var.eventbridge_bus_config, "eventbridge_arn"), null) != null ? 1 : 0
 
   arn  = try(lookup(var.eventbridge_bus_config, "eventbridge_arn"), null)
-  rule = aws_cloudwatch_event_rule.source.0.id
+  rule = aws_cloudwatch_event_rule.this_destination.0.id
 
 }
 
 #
 # Type: Source
 #
-resource "aws_cloudwatch_event_rule" "this" {
+resource "aws_cloudwatch_event_rule" "this_source" {
   count       = local.is_source ? 1 : 0
   name        = "codecommit-${var.name}"
   event_bus_name = "eventbridge-bus-${data.aws_region.current.name}-${var.name}"
@@ -98,10 +98,10 @@ PATTERN
   tags = var.tags
 }
 
-resource "aws_cloudwatch_event_target" "this" {
+resource "aws_cloudwatch_event_target" "this_source" {
   count = local.is_source && try(lookup(var.eventbridge_bus_config, "eventbridge_arn"), null) != null ? 1 : 0
 
-  arn  = try(lookup(var.eventbridge_bus_config, "eventbridge_arn"), null)
-  rule = aws_cloudwatch_event_rule.this.0.id
+  arn  = aws_codepipeline.this.0.arn
+  rule = aws_cloudwatch_event_rule.this_source.0.id
 
 }
