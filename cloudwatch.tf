@@ -1,6 +1,6 @@
 resource "aws_cloudwatch_event_rule" "codechange" {
   count       = var.create_codecommit ? 1 : 0
-  name        = "codecommit-${var.name}"
+  name        = "codecommit-commit-${var.name}"
   description = "Capture source code change events to trigger build"
 
   event_pattern = <<PATTERN
