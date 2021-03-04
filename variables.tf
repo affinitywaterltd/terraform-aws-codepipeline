@@ -26,7 +26,9 @@ variable "cross_account_config" {
   type        = any
   default     = {
     enabled = false
-    event_bus = false
+    event_bus = {
+      enabled = false
+    }
   }
 }
 
