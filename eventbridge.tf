@@ -16,9 +16,10 @@ resource "aws_cloudwatch_event_bus" "this" {
 resource "aws_cloudwatch_event_permission" "codecommit-cross-account" {
   count = local.is_destination && try(lookup(var.eventbridge_bus_config, "account_principal"), null) != null ? 1 : 0
 
-  principal    = try(lookup(var.eventbridge_bus_config, "account_principal"), null)
-  action = "events:PutEvents"
-  statement_id = "codecommit-account-access-${var.name}"
+  event_bus_name = "eventbridge-bus-${data.aws_region.current.name}-${var.name}"
+  principal      = try(lookup(var.eventbridge_bus_config, "account_principal"), null)
+  action         = "events:PutEvents"
+  statement_id   = "codecommit-account-access-${var.name}"
 }
 
 resource "aws_cloudwatch_event_rule" "this_destination" {
