@@ -658,7 +658,7 @@ EOF
 resource "aws_iam_role_policy" "AWSTriggerCodePipeline_Policy" {
   count = local.is_destination ? 1 : 0
   name = "events-codepipeline-trigger-policy-${data.aws_region.current.name}-${var.name}"
-  role = aws_iam_role.AWSTriggerCodePipelineRole.name
+  role = aws_iam_role.AWSTriggerCodePipelineRole.0.name
 
   policy = <<EOF
 {
