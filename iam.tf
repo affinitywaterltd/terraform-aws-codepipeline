@@ -628,3 +628,53 @@ resource "aws_iam_role_policy" "AWSCodeCommitRoleCrossAccount_policy" {
 EOF
 
 }
+
+
+#############################
+#######    Events    ########
+#############################
+resource "aws_iam_role" "AWSTriggerCodePipelineRole" {
+  count = local.is_destination ? 1 : 0
+  name = "events-codepipeline-trigger-role-${data.aws_region.current.name}-${var.name}"
+
+  assume_role_policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Principal": {
+        "Service": "events.amazonaws.com"
+      },
+      "Action": "sts:AssumeRole"
+    }
+  ]
+}
+EOF
+
+  tags =  var.tags
+}
+
+resource "aws_iam_role_policy" "AWSTriggerCodePipeline_Policy" {
+  count = local.is_destination ? 1 : 0
+  name = "events-codepipeline-trigger-policy-${data.aws_region.current.name}-${var.name}"
+  role = aws_iam_role.AWSTriggerCodePipelineRole.name
+
+  policy = <<EOF
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "codepipeline:StartPipelineExecution"
+            ],
+            "Resource": [
+                "${aws_codepipeline.this.0.arn}"
+            ]
+        }
+    ]
+}
+EOF
+
+}
