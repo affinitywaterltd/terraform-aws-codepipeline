@@ -69,10 +69,10 @@ resource "aws_cloudwatch_event_target" "this_destination" {
 #
 resource "aws_cloudwatch_event_rule" "this_source" {
   count       = local.is_source ? 1 : 0
-  name        = "eventbridge-crossaccount-codecommit-${var.codecommit_repo_name}"
+  name        = "eventbridge-crossaccount-codecommit-${local.codecommit_repo_name}"
   event_bus_name = "default"
 
-  description = "Capture source code change events to trigger build - ${var.codecommit_repo_name}"
+  description = "Capture source code change events to forward cross account - ${local.codecommit_repo_name}"
 
   event_pattern = <<PATTERN
 {
