@@ -56,6 +56,8 @@ PATTERN
 resource "aws_cloudwatch_event_target" "this_destination" {
   count = local.is_destination && try(lookup(var.eventbridge_bus_config, "eventbridge_arn"), null) != null ? 1 : 0
 
+  event_bus_name = "eventbridge-bus-${data.aws_region.current.name}-${var.name}"
+
   arn  = try(lookup(var.eventbridge_bus_config, "eventbridge_arn"), null)
   rule = aws_cloudwatch_event_rule.this_destination.0.id
 }
@@ -67,7 +69,7 @@ resource "aws_cloudwatch_event_target" "this_destination" {
 resource "aws_cloudwatch_event_rule" "this_source" {
   count       = local.is_source ? 1 : 0
   name        = "codecommit-${var.name}"
-  event_bus_name = "eventbridge-bus-${data.aws_region.current.name}-${var.name}"
+  event_bus_name = "default"
 
   description = "Capture source code change events to trigger build - ${var.name}"
 
@@ -99,6 +101,7 @@ PATTERN
 resource "aws_cloudwatch_event_target" "this_source" {
   count = local.is_source && try(lookup(var.eventbridge_bus_config, "eventbridge_arn"), null) != null ? 1 : 0
 
+  event_bus_name = "default"
   arn  = aws_codepipeline.this.0.arn
   rule = aws_cloudwatch_event_rule.this_source.0.id
 }
