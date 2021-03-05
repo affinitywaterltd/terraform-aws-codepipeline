@@ -101,7 +101,7 @@ PATTERN
 resource "aws_cloudwatch_event_target" "this_source" {
   count = local.is_source && try(lookup(var.eventbridge_bus_config, "eventbridge_arn"), null) != null ? 1 : 0
 
-  arn  = aws_codepipeline.this.0.arn
-  rule = aws_cloudwatch_event_rule.this_source.0.id
+  arn  = element(concat(aws_codepipeline.this.0.arn, ""), 0)
+  rule = element(concat(aws_cloudwatch_event_rule.this_source.0.id, ""), 0)
 
 }
