@@ -58,7 +58,7 @@ resource "aws_cloudwatch_event_target" "this_destination" {
 
   event_bus_name = "eventbridge-bus-${data.aws_region.current.name}-${var.name}"
 
-  arn  = try(lookup(var.eventbridge_bus_config, "eventbridge_arn"), null)
+  arn  = aws_codepipeline.this.0.arn
   rule = aws_cloudwatch_event_rule.this_destination.0.id
 }
 
@@ -102,6 +102,6 @@ resource "aws_cloudwatch_event_target" "this_source" {
   count = local.is_source && try(lookup(var.eventbridge_bus_config, "eventbridge_arn"), null) != null ? 1 : 0
 
   event_bus_name = "default"
-  arn  = aws_codepipeline.this.0.arn
+  arn  = try(lookup(var.eventbridge_bus_config, "eventbridge_arn"), null)
   rule = aws_cloudwatch_event_rule.this_source.0.id
 }
