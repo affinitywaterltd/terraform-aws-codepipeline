@@ -77,9 +77,6 @@ resource "aws_cloudwatch_event_rule" "this_source" {
   event_pattern = <<PATTERN
 {
     "detail": {
-        "referenceName": [
-            "${var.defaultbranch}"
-        ],
         "referenceType": [
             "branch"
         ]
