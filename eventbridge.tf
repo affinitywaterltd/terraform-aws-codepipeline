@@ -64,7 +64,7 @@ PATTERN
 }
 
 resource "aws_cloudwatch_event_target" "this_destination" {
-  count = local.is_destination && try(lookup(var.eventbridge_bus_config, "eventbridge_arn"), null) != null ? 1 : 0
+  count = local.is_destination ? 1 : 0
 
   event_bus_name = "eventbridge-bus-${data.aws_region.current.name}-${var.name}"
 
