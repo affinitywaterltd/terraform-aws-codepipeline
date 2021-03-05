@@ -71,6 +71,7 @@ resource "aws_cloudwatch_event_target" "this_destination" {
   arn  = aws_codepipeline.this.0.arn
   role_arn = aws_iam_role.AWSTriggerCodePipelineRole.0.arn
   rule = aws_cloudwatch_event_rule.this_destination.0.id
+  
 }
 
 
