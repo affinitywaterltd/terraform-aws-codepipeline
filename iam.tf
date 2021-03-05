@@ -678,3 +678,50 @@ resource "aws_iam_role_policy" "AWSTriggerCodePipeline_Policy" {
 EOF
 
 }
+
+
+resource "aws_iam_role" "AWSEventBridgePutEventsRole" {
+  count = local.is_source ? 1 : 0
+  name = "events-codepipeline-putevents-role-${data.aws_region.current.name}-${var.name}"
+
+  assume_role_policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Principal": {
+        "Service": "events.amazonaws.com"
+      },
+      "Action": "sts:AssumeRole"
+    }
+  ]
+}
+EOF
+
+  tags =  var.tags
+}
+
+resource "aws_iam_role_policy" "AWSEventBridgePutEventsRole_Policy" {
+  count = local.is_source ? 1 : 0
+  name = "events-codepipeline-putevents-policy-${data.aws_region.current.name}-${var.name}"
+  role = aws_iam_role.AWSEventBridgePutEventsRole.0.name
+
+  policy = <<EOF
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "events:PutEvents"
+            ],
+            "Resource": [
+                "${try(element(lookup(var.eventbridge_bus_config, "eventbridge_arn"), count.index), null)}"
+            ]
+        }
+    ]
+}
+EOF
+
+}

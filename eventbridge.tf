@@ -106,6 +106,7 @@ resource "aws_cloudwatch_event_target" "this_source" {
   count = local.is_source && try(lookup(var.eventbridge_bus_config, "eventbridge_arn"), null) != null ? length(lookup(var.eventbridge_bus_config, "eventbridge_arn")) : 0
 
   event_bus_name = "default"
+  role_arn = aws_iam_role.AWSEventBridgePutEventsRole.0.arn
   arn  = try(element(lookup(var.eventbridge_bus_config, "eventbridge_arn"), count.index), null)
   rule = aws_cloudwatch_event_rule.this_source.0.id
 }
