@@ -13,6 +13,15 @@ resource "aws_cloudwatch_event_bus" "this" {
   tags = var.tags
 }
 
+resource "aws_cloudwatch_event_archive" "this" {
+  count = local.is_destination ? 1 : 0
+  
+  name             = "eventbridge-bus-${data.aws_region.current.name}-${var.name}"
+  description      = "Archived events from eventbridge-bus-${data.aws_region.current.name}-${var.name}"
+  event_source_arn = aws_cloudwatch_event_bus.this.0.arn
+  retention_days   = 7
+}
+
 resource "aws_cloudwatch_event_permission" "codecommit-cross-account" {
   count = local.is_destination && try(lookup(var.eventbridge_bus_config, "account_principal"), null) != null ? 1 : 0
 
