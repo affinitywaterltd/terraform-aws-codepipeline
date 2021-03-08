@@ -20,6 +20,7 @@ resource "aws_cloudwatch_event_archive" "this" {
   description      = "Archived events from eventbridge-bus-${data.aws_region.current.name}-${var.name}"
   event_source_arn = aws_cloudwatch_event_bus.this.0.arn
   retention_days   = 7
+  depends_on = [ aws_cloudwatch_event_bus.this ]
 }
 
 resource "aws_cloudwatch_event_permission" "codecommit-cross-account" {
@@ -29,6 +30,7 @@ resource "aws_cloudwatch_event_permission" "codecommit-cross-account" {
   principal      = try(lookup(var.eventbridge_bus_config, "account_principal"), null)
   action         = "events:PutEvents"
   statement_id   = "codecommit-account-access-${var.name}"
+  depends_on = [ aws_cloudwatch_event_bus.this ]
 }
 
 resource "aws_cloudwatch_event_rule" "this_destination" {
@@ -59,7 +61,7 @@ resource "aws_cloudwatch_event_rule" "this_destination" {
     ]
 }
 PATTERN
-  
+  depends_on = [ aws_cloudwatch_event_bus.this ]
   tags = var.tags
 }
 
@@ -72,6 +74,7 @@ resource "aws_cloudwatch_event_target" "this_destination" {
   role_arn = aws_iam_role.AWSTriggerCodePipelineRole.0.arn
   rule = "codecommit-${var.name}"
 
+  depends_on = [ aws_cloudwatch_event_rule.this_destination ]
 }
 
 
@@ -109,4 +112,6 @@ resource "aws_cloudwatch_event_target" "this_source" {
   role_arn = aws_iam_role.AWSEventBridgePutEventsRole.0.arn
   arn  = try(element(lookup(var.eventbridge_bus_config, "eventbridge_arn"), count.index), null)
   rule = aws_cloudwatch_event_rule.this_source.0.id
+
+  depends_on = [ aws_cloudwatch_event_rule.this_source ]
 }
