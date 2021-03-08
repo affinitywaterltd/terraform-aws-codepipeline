@@ -46,13 +46,13 @@ resource "aws_cloudwatch_event_rule" "this_destination" {
         ],
         "referenceType": [
             "branch"
+        ],
+        "repositoryName": [
+            "${local.codecommit_repo_arn}"
         ]
     },
     "detail-type": [
         "CodeCommit Repository State Change"
-    ],
-    "resources": [
-        "${local.codecommit_repo_arn}"
     ],
     "source": [
         "aws.codecommit"
