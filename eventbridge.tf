@@ -74,7 +74,7 @@ resource "aws_cloudwatch_event_target" "this_destination" {
   role_arn = aws_iam_role.AWSTriggerCodePipelineRole.0.arn
   rule = "codecommit-${var.name}"
 
-  depends_on = [ aws_cloudwatch_event_rule.this_destination ]
+  depends_on = [ aws_cloudwatch_event_rule.this_destination, aws_cloudwatch_event_rule.this_destination ]
 }
 
 
