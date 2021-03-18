@@ -402,7 +402,57 @@ locals {
             EnvironmentName = "${var.elasticbeanstalk_application_name}-${var.elasticbeanstalk_environment_name}"
           }
         }
-      }
+      },
+    ],
+    "CODECOMMIT_APPROVAL_S3BUCKET" = [
+      {
+        name = "Source"
+        action = {
+          name     = "Source"
+          category = "Source"
+          owner    = "AWS"
+          provider = "CodeCommit"
+          version  = "1"
+          role_arn = try(lookup(var.cross_account_config, "codecommit_role_arn"), "") == "" ? null : lookup(var.cross_account_config, "codecommit_role_arn")
+          configuration = {
+            BranchName           = var.defaultbranch
+            PollForSourceChanges = "false"
+            RepositoryName       = local.codecommit_repo_name
+          }
+          input_artifacts  = []
+          output_artifacts = ["SourceArtifact"]
+        }
+      },
+      {
+        name = "Approval"
+        action = {
+          name      = "Approval"
+          category  = "Approval"
+          owner     = "AWS"
+          provider  = "Manual"
+          version   = "1"
+          input_artifacts  = []
+          output_artifacts = []
+          region           = data.aws_region.current.name
+          configuration    = null
+        }
+      },
+      {
+        name = "Deploy"
+        action = {
+          name             = "Deploy"
+          category         = "Deploy"
+          owner            = "AWS"
+          provider         = "ElasticBeanstalk"
+          version          = "1"
+          input_artifacts  = ["BuildArtifact"]
+          output_artifacts = []
+          region           = var.deployment_region == "" ? data.aws_region.current.name : var.deployment_region
+          configuration = {
+            BucketName = var.s3_bucket_name
+          }
+        }
+      },
     ]
   }
 }

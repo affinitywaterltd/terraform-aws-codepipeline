@@ -344,3 +344,9 @@ variable "artifact_store_encryption_key_id" {
   type        = string
   default = ""
 }
+
+variable "s3_bucket_name" {
+  description     = "S3 Bucket name used for deployment"
+  type        = string
+  default = ""
+}
