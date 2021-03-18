@@ -450,7 +450,7 @@ locals {
           region           = var.deployment_region == "" ? data.aws_region.current.name : var.deployment_region
           configuration = {
             BucketName = var.s3_bucket_name
-            Extract    = false
+            Extract    = true
           }
         }
       },
