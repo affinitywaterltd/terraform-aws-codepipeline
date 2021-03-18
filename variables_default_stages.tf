@@ -443,13 +443,14 @@ locals {
           name             = "Deploy"
           category         = "Deploy"
           owner            = "AWS"
-          provider         = "ElasticBeanstalk"
+          provider         = "S3"
           version          = "1"
           input_artifacts  = ["BuildArtifact"]
           output_artifacts = []
           region           = var.deployment_region == "" ? data.aws_region.current.name : var.deployment_region
           configuration = {
             BucketName = var.s3_bucket_name
+            Extract    = false
           }
         }
       },
