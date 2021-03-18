@@ -445,7 +445,7 @@ locals {
           owner            = "AWS"
           provider         = "S3"
           version          = "1"
-          input_artifacts  = ["BuildArtifact"]
+          input_artifacts  = ["SourceArtifact"]
           output_artifacts = []
           region           = var.deployment_region == "" ? data.aws_region.current.name : var.deployment_region
           configuration = {
