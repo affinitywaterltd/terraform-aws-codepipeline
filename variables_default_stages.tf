@@ -1,5 +1,10 @@
 locals {
   default_stages = {
+
+    #
+    # Deployment to ECS without approval
+    # Good for non-prod
+    #
     "CODECOMMIT_CODEBUILD_ECS" = [
       {
         name = "Source"
@@ -52,6 +57,12 @@ locals {
         }
       }
     ],
+
+
+    #
+    # Deployment to ECS with approval
+    # Good for Production
+    #
     "CODECOMMIT_CODEBUILD_APPROVAL_ECS" = [
       {
         name = "Source"
@@ -118,6 +129,12 @@ locals {
         }
       }
     ],
+
+    
+    #
+    # Deployment to Cloudformation without approval. Use for Lambda deployments and more
+    # Good for non-prod
+    #
     "CODECOMMIT_CODEBUILD_CLOUDFORMATION" = [
       {
         name = "Source"
@@ -195,6 +212,12 @@ locals {
         }
       }
     ],
+
+    
+    #
+    # Deployment to Cloudformation with approval. Use for Lambda deployments and more
+    # Good for Production
+    #
     "CODECOMMIT_CODEBUILD_APPROVAL_CLOUDFORMATION" = [
       {
         name = "Source"
@@ -286,6 +309,12 @@ locals {
         }
       }
     ],
+
+    
+    #
+    # Deployment to ElasticBeanstalk with builds from Jenkins without approval. Must add deployment provider manally for Jenkins
+    # Good for non-prod
+    #
     "CODECOMMIT_JENKINS_ELASTICBEANSTALK" = [
       {
         name = "Source"
@@ -338,6 +367,12 @@ locals {
         }
       }
     ],
+
+    
+    #
+    # Deployment to ElasticBeanstalk with builds from Jenkins with approval. Must add deployment provider manally for Jenkins
+    # Good for Production
+    #
     "CODECOMMIT_JENKINS_APPROVAL_ELASTICBEANSTALK" = [
       {
         name = "Source"
@@ -404,6 +439,55 @@ locals {
         }
       },
     ],
+
+    
+    #
+    # Deployment to S3 Bucket without approval. Ideal for static hosted websites
+    # Good for non-prod
+    #
+    "CODECOMMIT_S3BUCKET" = [
+      {
+        name = "Source"
+        action = {
+          name     = "Source"
+          category = "Source"
+          owner    = "AWS"
+          provider = "CodeCommit"
+          version  = "1"
+          role_arn = try(lookup(var.cross_account_config, "codecommit_role_arn"), "") == "" ? null : lookup(var.cross_account_config, "codecommit_role_arn")
+          configuration = {
+            BranchName           = var.defaultbranch
+            PollForSourceChanges = "false"
+            RepositoryName       = local.codecommit_repo_name
+          }
+          input_artifacts  = []
+          output_artifacts = ["SourceArtifact"]
+        }
+      },
+      {
+        name = "Deploy"
+        action = {
+          name             = "Deploy"
+          category         = "Deploy"
+          owner            = "AWS"
+          provider         = "S3"
+          version          = "1"
+          input_artifacts  = ["SourceArtifact"]
+          output_artifacts = []
+          region           = var.deployment_region == "" ? data.aws_region.current.name : var.deployment_region
+          configuration = {
+            BucketName = var.s3_bucket_name
+            Extract    = true
+          }
+        }
+      }
+    ],
+
+    
+    #
+    # Deployment to S3 Bucket with approval. Ideal for static hosted websites
+    # Good for Production
+    #
     "CODECOMMIT_APPROVAL_S3BUCKET" = [
       {
         name = "Source"
@@ -453,7 +537,7 @@ locals {
             Extract    = true
           }
         }
-      },
+      }
     ]
   }
 }
