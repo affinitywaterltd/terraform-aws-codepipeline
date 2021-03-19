@@ -748,7 +748,7 @@ resource "aws_iam_policy" "AWSJenkinsCodePipelineUser_policy" {
       "Effect": "Allow",
       "Action": "s3:*",
       "Resource": [
-        "arn:aws:s3:::${try(lookup(var.cross_account_config, "s3_bucket_name"), "")}"
+        "arn:aws:s3:::${try(lookup(artifact_store.value, "location", null), "")}/*"
       ]
     } 
   ]
