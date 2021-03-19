@@ -725,3 +725,56 @@ resource "aws_iam_role_policy" "AWSEventBridgePutEventsRole_Policy" {
 EOF
 
 }
+
+
+resource "aws_iam_user" "AWSJenkinsCodePipelineUser" {
+  count = try(lookup(var.jenkins_config, "create_iam_user"), false) ? 1 : 0
+
+  name = "jenkins-codepipeline-user-${data.aws_region.current.name}-${var.name}"
+  tags = var.tags
+}
+
+resource "aws_iam_policy" "AWSJenkinsCodePipelineUser_policy" {
+  count = try(lookup(var.jenkins_config, "create_iam_user"), false) ? 1 : 0
+  name = "jenkins-codepipeline-policy-${data.aws_region.current.name}-${var.name}"
+
+  policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Id": "S3PolicyId1",
+  "Statement": [
+    {
+      "Sid": "IPAllow",
+      "Effect": "Allow",
+      "Principal": "*",
+      "Action": "s3:*",
+      "Resource": "arn:aws:s3:::${try(lookup(var.cross_account_config, "s3_bucket_name"), "")}/*",
+    } 
+  ]
+}
+EOF
+}
+
+resource "aws_iam_group" "AWSJenkinsCodePipelineUser_group" {
+  count = try(lookup(var.jenkins_config, "create_iam_user"), false) ? 1 : 0
+  name = "jenkins-codepipeline-group-${data.aws_region.current.name}-${var.name}"
+}
+
+resource "aws_iam_group_policy_attachment" "AWSJenkinsCodePipelineUser_group_attachment" {
+  count = try(lookup(var.jenkins_config, "create_iam_user"), false) ? 1 : 0
+
+  group      = aws_iam_group.AWSJenkinsCodePipelineUser_group.0.name
+  policy_arn = aws_iam_policy.AWSJenkinsCodePipelineUser_policy.0.arn
+}
+
+resource "aws_iam_group_membership" "AWSJenkinsCodePipelineUser_group_membership" {
+  count = try(lookup(var.jenkins_config, "create_iam_user"), false) ? 1 : 0
+
+  name = "jenkins-codepipeline-group-membership-${data.aws_region.current.name}-${var.name}"
+
+  users = [
+    aws_iam_user.AWSJenkinsCodePipelineUser.0.name
+  ]
+
+  group = aws_iam_group.AWSJenkinsCodePipelineUser_group.0.name
+}
