@@ -748,7 +748,7 @@ resource "aws_iam_policy" "AWSJenkinsCodePipelineUser_policy" {
       "Effect": "Allow",
       "Action": "s3:*",
       "Resource": [
-        "arn:aws:s3:::${try(lookup(artifact_store.value, "location", null), "")}/*"
+        "arn:aws:s3:::${var.artifact_store_location == "" ? module.artifacts[0].id : var.artifact_store_location}/*"
       ]
     } 
   ]
