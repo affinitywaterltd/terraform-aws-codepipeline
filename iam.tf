@@ -756,7 +756,7 @@ resource "aws_iam_policy" "AWSJenkinsCodePipelineUser_policy" {
       "Effect": "Allow",
       "Action": [
         "codepipeline:PollForJobs"
-      ]
+      ],
       "Resource": [
         "${aws_codepipeline.this.0.arn}",
         "arn:aws:codepipeline:*:${data.aws_caller_identity.current.account_id}:actiontype:*/*/${lookup(var.jenkins_config, "provider")}/*"
