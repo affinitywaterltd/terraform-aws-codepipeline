@@ -748,7 +748,8 @@ resource "aws_iam_policy" "AWSJenkinsCodePipelineUser_policy" {
       "Effect": "Allow",
       "Action": "s3:*",
       "Resource": [
-        "arn:aws:s3:::${var.artifact_store_location == "" ? module.artifacts[0].id : var.artifact_store_location}/*"
+        "arn:aws:s3:::${var.artifact_store_location == "" ? module.artifacts[0].id : var.artifact_store_location}/*",
+        "arn:aws:s3:::${var.artifact_store_location == "" ? module.artifacts[0].id : var.artifact_store_location}"
       ]
     },
     {
@@ -758,9 +759,19 @@ resource "aws_iam_policy" "AWSJenkinsCodePipelineUser_policy" {
         "codepipeline:PollForJobs"
       ],
       "Resource": [
-        "${aws_codepipeline.this.0.arn}",
         "arn:aws:codepipeline:*:${data.aws_caller_identity.current.account_id}:actiontype:*/*/${lookup(var.jenkins_config, "provider")}/*"
       ]
+    },
+    {
+        "Sid": "CodePipelineAllowAll",
+        "Effect": "Allow",
+        "Action": [
+            "codepipeline:PutJobFailureResult",
+            "codepipeline:PutJobSuccessResult",
+            "codepipeline:AcknowledgeJob",
+            "codepipeline:GetJobDetails"
+        ],
+        "Resource": "*"
     }
   ]
 }
