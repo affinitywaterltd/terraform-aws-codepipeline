@@ -8,7 +8,7 @@ data "aws_iam_role" "existing" {
 data "aws_region" "current" {}
 
 locals {
-  bucket     = substr("aw-artifacts-${data.aws_region.current.name}-${data.aws_caller_identity.current.account_id}-${var.name}", 0, 63)
+  bucket     = replace(substr("aw-artifacts-${data.aws_region.current.name}-${data.aws_caller_identity.current.account_id}-${var.name}", 0, 63), "_", "-")
   bucketname = var.bucketname == "" ? replace(local.bucket, "_", "-") : replace(var.bucketname, "_", "-")
 }
 
