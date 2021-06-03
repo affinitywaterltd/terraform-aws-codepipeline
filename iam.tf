@@ -389,6 +389,7 @@ data "aws_iam_policy_document" "pipeline" {
 
   statement {
     actions = [
+      "apigateway:*",
       "elasticbeanstalk:*",
       "ec2:*",
       "elasticloadbalancing:*",
