@@ -24,7 +24,7 @@ resource "aws_kms_key" "kms_pipeline_key" {
       "Sid": "Allow Key usage",
       "Effect": "Allow",
       "Principal": {
-        "AWS": ${jsonencode(compact(concat(aws_iam_role.pipeline.*.arn, aws_iam_role.codebuild.*.arn,aws_iam_role.cloudformation.*.arn, list(local.codecommit_role_arn), list(""))))}
+        "AWS": ${jsonencode(compact(concat(aws_iam_role.pipeline.*.arn, aws_iam_role.codebuild.*.arn,aws_iam_role.cloudformation.*.arn, tolist([local.codecommit_role_arn]), tolist([""]))))}
       },
       "Action": [
         "kms:Encrypt",
@@ -51,4 +51,4 @@ resource "aws_kms_alias" "kms_alias_pipeline_key" {
 
 
 #,
-          #"${element(concat(aws_iam_role.codebuild.*.arn, list("")), 0)}"
+          #"${element(concat(aws_iam_role.codebuild.*.arn, tolist([""])), 0)}"
