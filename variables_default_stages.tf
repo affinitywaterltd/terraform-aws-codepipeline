@@ -35,7 +35,7 @@ locals {
           output_artifacts = ["BuildArtifact"]
           version          = "1"
           configuration = {
-            ProjectName = element(concat(aws_codebuild_project.this.*.id, list("")), 0)
+            ProjectName = element(concat(aws_codebuild_project.this.*.id, tolist([""])), 0)
           }
         }
       },
@@ -93,7 +93,7 @@ locals {
           output_artifacts = ["BuildArtifact"]
           version          = "1"
           configuration = {
-            ProjectName = element(concat(aws_codebuild_project.this.*.id, list("")), 0)
+            ProjectName = element(concat(aws_codebuild_project.this.*.id, tolist([""])), 0)
           }
         }
       },
@@ -165,7 +165,7 @@ locals {
           output_artifacts = ["BuildArtifact"]
           version          = "1"
           configuration = {
-            ProjectName = element(concat(aws_codebuild_project.this.*.id, list("")), 0)
+            ProjectName = element(concat(aws_codebuild_project.this.*.id, tolist([""])), 0)
           }
         }
       },
@@ -248,7 +248,7 @@ locals {
           output_artifacts = ["BuildArtifact"]
           version          = "1"
           configuration = {
-            ProjectName = element(concat(aws_codebuild_project.this.*.id, list("")), 0)
+            ProjectName = element(concat(aws_codebuild_project.this.*.id, tolist([""])), 0)
           }
         }
       },
