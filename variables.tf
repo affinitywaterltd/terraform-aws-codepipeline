@@ -13,10 +13,10 @@ locals {
 }
 
 locals {
-  codepipeline_role_arn = var.codepipeline_iam_role == "" &&  var.create_codepipeline ? element(concat(aws_iam_role.pipeline.*.arn, list("")), 0) : var.codepipeline_iam_role
-  codedeploy_role_arn = var.codedeploy_iam_role == "" ? element(concat(aws_iam_role.pipeline.*.arn, list("")), 0) : var.codedeploy_iam_role
-  cloudformation_role_arn = var.cloudformation_iam_role == "" ? element(concat(aws_iam_role.cloudformation.*.arn, list("")), 0) : var.cloudformation_iam_role
-  codecommit_role_arn = try(lookup(var.cross_account_config, "codecommit_role_arn"), "") == "" ? element(concat(aws_iam_role.AWSCodeCommitRoleCrossAccount.*.arn, list("")), 0) : lookup(var.cross_account_config, "codecommit_role_arn")
+  codepipeline_role_arn = var.codepipeline_iam_role == "" &&  var.create_codepipeline ? element(concat(aws_iam_role.pipeline.*.arn, tolist([""])), 0) : var.codepipeline_iam_role
+  codedeploy_role_arn = var.codedeploy_iam_role == "" ? element(concat(aws_iam_role.pipeline.*.arn, tolist([""])), 0) : var.codedeploy_iam_role
+  cloudformation_role_arn = var.cloudformation_iam_role == "" ? element(concat(aws_iam_role.cloudformation.*.arn, tolist([""])), 0) : var.cloudformation_iam_role
+  codecommit_role_arn = try(lookup(var.cross_account_config, "codecommit_role_arn"), "") == "" ? element(concat(aws_iam_role.AWSCodeCommitRoleCrossAccount.*.arn, tolist([""])), 0) : lookup(var.cross_account_config, "codecommit_role_arn")
 
   repo_name = var.repo_name == "" ? var.name : var.repo_name
   codecommit_repo_name = var.create_codecommit && try(lookup(var.cross_account_config, "codecommit_repo_name"), "") == "" ? local.repo_name  : lookup(var.cross_account_config, "codecommit_repo_name")
