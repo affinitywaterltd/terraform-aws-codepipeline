@@ -314,3 +314,11 @@ variable "s3_bucket_name" {
   type        = string
   default = ""
 }
+
+variable "artifact" {
+  description = "Populates the Artifact block"
+  default = {
+    packaging      = "NONE"
+    namespace_type = "NONE"
+  }
+}

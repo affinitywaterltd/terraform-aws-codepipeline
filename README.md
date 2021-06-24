@@ -190,6 +190,7 @@ module "codepipeline" {
 | sourcecode | A map to describe where your sourcecode comes from, to fill the sourcecode block in a Codebuild project | `map` | `{type = "CODECOMMIT", location  = "", buildspec = ""}` | no |
 | sse_algorithm | The type of encryption algorithm to use | `string` | `"aws:kms"` | no |
 | encryption_disabled | Disable the encryption of artifacts | `bool` | `false` | no |
+| artifact | Populates the Artifact block | `map` | `{packaging = "NONE", namespace_type = "NONE"}` | no |
 | artifact_type | The Artifact type, S3, CODEPIPELINE or NO_ARTIFACT | `string` | `"S3"` | no |
 | artifact_store_type | The Artifact type used in CODEPIPELINE | `string` | `"S3"` | no |
 | artifact_store_location | The Artifact location used in CODEPIPELINE | `string` | `""` | no |
