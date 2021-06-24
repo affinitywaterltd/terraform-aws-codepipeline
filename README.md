@@ -131,6 +131,7 @@ module "ec2" {
 
 Sometimes you need to have a way to create resources conditionally but Terraform does not allow to use count inside module block, so the solution is to specify argument create_codepipeline.
 
+```hcl
 # Codepipeline will not be created
 module "codepipeline" {
   source  = "github.com/affinitywaterltd/terraform-aws-codepipeline"
@@ -138,6 +139,8 @@ module "codepipeline" {
   create_codepipeline = false
   # ... omitted
 }
+```
+
 ## Requirements
 
 | Name | Version |
