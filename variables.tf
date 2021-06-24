@@ -1,4 +1,4 @@
-  data "aws_caller_identity" "current" {}
+data "aws_caller_identity" "current" {}
 
 data "aws_iam_role" "existing" {
   count = var.role == "" ? 0 : 1
@@ -165,20 +165,6 @@ variable "role" {
   type        = string
 }
 
-variable "artifact" {
-  description = "Populates the Artifact block"
-  default = {
-    packaging      = "NONE"
-    namespace_type = "NONE"
-  }
-}
-
-variable "projectroot" {
-  description = "The name of the parent project for SSM"
-  type        = string
-  default     = "core"
-}
-
 variable "description" {
   description = "Yeah it's the description"
   type        = string
@@ -186,7 +172,7 @@ variable "description" {
 }
 
 variable "bucketname" {
-  description = ""
+  description = "Overrides the default bucket name with a custom value"
   default     = ""
   type        = string
 }
@@ -262,18 +248,6 @@ variable "artifact_store_location" {
   default     = ""
 }
 
-variable "versioning" {
-  type        = bool
-  description = "Set bucket to version"
-  default     = false
-}
-
-variable "mfa_delete" {
-  type        = bool
-  description = "Require MFA to delete"
-  default     = false
-}
-
 
 variable "artifact_store" {
   description = "Map to populate the artifact block"
@@ -285,11 +259,6 @@ variable "name" {
   type = string
 }
 
-variable "role_arn" {
-  type        = string
-  description = "Optionally supply an existing role"
-  default     = ""
-}
 
 variable "cloudformation_role_arn" {
   type        = string
@@ -305,7 +274,7 @@ variable "codecommit_role_arn" {
 
 variable "cloudformation_iam_policies" {
   type        = list
-  description = "Optionally supply IAM policies to add to teh Cloudformation Role"
+  description = "Optionally supply IAM policies to add to the Cloudformation Role"
   default     = []
 }
 
@@ -327,11 +296,6 @@ variable "tags" {
   description = "Implements the common tags scheme"
 }
 
-variable "policypath" {
-  default     = ""
-  type        = string
-  description = ""
-}
 
 variable "artifact_store_encryption_type" {
   description     = "Encryption Type used by CodePipeline Artifacts"
