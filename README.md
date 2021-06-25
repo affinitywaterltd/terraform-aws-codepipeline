@@ -28,102 +28,106 @@ Terraform ~> 1.0.0
 
 ## Usage
 
-Windows Example with minimum required and useful settings options
+Example with minimum required and useful settings options (including regional options)
 ```hcl
-module "ec2" {
-  source        = "github.com/affinitywaterltd/terraform-aws-ec2"
-  ami           = local.windows2019_ami
-  iam_role      = local.ssm_role
-  instance_type = "t3.small"
-  user_data     = local.windows_user_data
+module "example" {
+  source = "github.com/affinitywaterltd/terraform-aws-codepipeline"
 
-  subnet_id = local.priv_a
+  name = "example"
+  description = "Example CodePipeline"
+
+  default_logging_bucket = "awl-s3-accesslogs-${var.account}-${var.environment}"
+
+  preconfigured_stage_config = "CODECOMMIT_CODEBUILD_CLOUDFORMATION"
+  cloudformation_iam_policies = [] #["arn:aws:iam::aws:policy/IAMFullAccess", "arn:aws:iam::aws:policy/AWSLambda_FullAccess"]
+  #cloudformation_capabilities = "CAPABILITY_IAM"
+  #cloudformation_template_name = "cfn-template.yml"
+
+  /*environment = {
+    privileged_mode = "false"
+    type            = "LINUX_CONTAINER"
+    image           = "aws/codebuild/standard:5.0"
+    compute_type    = "BUILD_GENERAL1_SMALL"
+  }*/
   
-  security_groups_ids = [
-    local.admin_sg,
-    local.remote_access_sg
-  ]
+  /*sourcecode = {
+    type      = "CODECOMMIT"
+    location  = ""
+    buildspec = "buildspec.yml"
+  }*/
   
-  root_volume_size = 50
-  /*ebs_volumes = [
-    {
-      size = 2
-      type = "gp3"
-    },
-    {
-      size = 3
-      type = "gp3"
-      iops = 3500 # max 500 per GB (Default 3000)
-      throughput = 150 # max 250 (Default 125)
-    },
-    {
-      size = 1 # Defaults to standard if no type is specified
-    }
+  /*codebuild_environment_variables = [
+	  {
+		name = "MY_VARIABLE"
+		value = "MYVALUE"
+	  }
   ]*/
   
-  tags = merge(
-    local.common_tags,
-    {
-      "ApplicationType"      = "Application"
-      "Name"                 = ""
-      "Description"          = ""
-      "OperatingSystem"      = "Windows Server 2019"
-      "aws_backup_plan_daily_2200_30days" = "true"
-      "Schedule"             = "ec2:0800-1700:mon-fri"
-      "CreationDate"         = ""
-      "ssmMaintenanceWindow" = "aws_week-2_wed_2200"
-      "ssmNotification"      = "[email]:[email]:[email]"
-    },
-  )
+  /*cross_account_config = {
+    codecommit_role_arn = "arn:aws:iam::[dev-account-id]:role/codecommit-crossaccount-eu-west-1-example"
+    codecommit_repo_name = "example"
+  }*/
+
+  #deployment_region = "eu-west-2"
+
+  /*regional_artifacts_store = {
+    eu-west-2 = {
+      location = var.artifacts_eu_west_2
+      type = "S3"
+      kms_id = var.artifacts_kms_eu_west_2
+    }
+  }*/
+
+  tags = local.common_tags
 }
 ```
 
-Windows Example with minimum required and useful settings options
+#### Multi-Account example
+Account A - containing codecommit repo
 ```hcl
-module "ec2" {
-  source        = "github.com/affinitywaterltd/terraform-aws-ec2"
-  ami           = local.awslinux2_ami
-  iam_role      = local.ssm_role
-  instance_type = "t3.small"
-  user_data     = local.linux_user_data
+module "example" {
+  source = "github.com/affinitywaterltd/terraform-aws-codepipeline"
 
-  subnet_id = local.priv_a
+  name = "example"
+  description = "Example CodePipeline"
+  create_codecommit = true
 
-  security_groups_ids = [
-    local.admin_sg,
-    local.remote_access_sg
-  ]
+  default_logging_bucket = "awl-s3-accesslogs-${var.account}-${var.environment}"
   
-  root_volume_size = 50
-  /*ebs_volumes = [
-    {
-      size = 2
-      type = "gp3"
-    },
-    {
-      size = 3
-      type = "gp3"
-      iops = 3500 # max 500 per GB (Default 3000)
-      throughput = 150 # mac 250 (Default 125)
-    },
-    {
-      size = 1 # Defaults to standard if no type is specified
-    }
-  ]*/
+  preconfigured_stage_config = "CODECOMMIT_CODEBUILD_CLOUDFORMATION"
+  cloudformation_iam_policies = [] #["arn:aws:iam::aws:policy/IAMFullAccess", "arn:aws:iam::aws:policy/AWSLambda_FullAccess"]
+  #cloudformation_capabilities = "CAPABILITY_IAM"
 
-  tags = merge(
-    local.common_tags,
-    {
-      "ApplicationType"      = "Application"
-      "Name"                 = ""
-      "Description"          = ""
-      "OperatingSystem"      = "Amazon Linux 2"
-      "aws_backup_plan_daily_2200_30days" = "true"
-      "Schedule"             = "ec2:0800-1700:mon-fri"
-      "CreationDate"         = ""
-      "ssmMaintenanceWindow" = "aws_linux_week-2_wed_2200"
-    },
-  )
+  cross_account_config = {
+    enabled = true
+    assume_role_princpals = ["arn:aws:iam::[account-id]:role/service-role/codepipeline-eu-west-1-example"]
+    s3_bucket_name = "aw-artifacts-eu-west-1-[account-id]-example"
+    kms_key = "arn:aws:kms:eu-west-1:[account-id]:key/[key-id]"
+  }
+
+  tags = local.common_tags
+}
+```
+Account B
+```hcl
+module "example" {
+  source = "github.com/affinitywaterltd/terraform-aws-codepipeline"
+
+  name = "example"
+  description = "Example CodePipeline"
+
+  default_logging_bucket = "awl-s3-accesslogs-${var.account}-${var.environment}"
+
+  preconfigured_stage_config = "CODECOMMIT_CODEBUILD_APPROVAL_CLOUDFORMATION"
+  cloudformation_iam_policies = [] #["arn:aws:iam::aws:policy/IAMFullAccess", "arn:aws:iam::aws:policy/AWSLambda_FullAccess"]
+  #cloudformation_capabilities = "CAPABILITY_IAM"
+
+  cross_account_config = {
+    codecommit_role_arn = "arn:aws:iam::[account-a-id]:role/codecommit-crossaccount-eu-west-1-example"
+    codecommit_repo_name = "example"
+  }
+
+  tags = local.common_tags
 }
 ```
 
